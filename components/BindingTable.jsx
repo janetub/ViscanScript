@@ -7,7 +7,7 @@
 import { useState, useEffect } from "react";
 import { fetchCollectionData } from "@/utils/getDocs";
 
-const BindingTable = ({ toggleShowDetails, collectionName }) => {
+const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus }) => {
   const [ loading, setLoading ] = useState(true);
   const [ searchQuery, setSearchQuery ] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,10 +27,10 @@ const BindingTable = ({ toggleShowDetails, collectionName }) => {
   
     if (query === '') {
       // If the search query is empty, reset displayedBindings to the original bindings array
-      setDisplayedBindings(bindings);
+      setDisplayedBindings(currentBindings);
     } else {
       // Otherwise, filter and sort the bindings based on the search query
-      const filteredBindings = bindings.filter(binding =>
+      const filteredBindings = currentBindings.filter(binding =>
         binding.title.toLowerCase().includes(query)
       );
       const sortedFilteredBindings = filteredBindings.sort((a, b) => a.priorityNum - b.priorityNum);
@@ -66,12 +66,18 @@ const BindingTable = ({ toggleShowDetails, collectionName }) => {
   
     const fetchBindings = async () => {
       const fetchedBindings = await fetchCollectionData(collectionName);
-      setDisplayedBindings(fetchedBindings);
+      let filteredBindings;
+      if (bindingOrderStatus && bindingOrderStatus !== 'All') {
+        filteredBindings = fetchedBindings.filter(binding => binding.status === bindingOrderStatus);
+      } else {
+        filteredBindings = fetchedBindings;
+      }
+      setDisplayedBindings(filteredBindings);
       setLoading(false);
     };
   
     fetchBindings();
-  }, [collectionName]);
+  }, [collectionName, bindingOrderStatus]);
 
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);
@@ -89,7 +95,7 @@ const BindingTable = ({ toggleShowDetails, collectionName }) => {
     if (order === 'newest') {
       setCurrentPage(1);
     } else if (order === 'oldest') {
-      const lastPage = Math.ceil(bindings.length / itemsPerPage);
+      const lastPage = Math.ceil(currentBindings.length / itemsPerPage);
       setCurrentPage(lastPage);
     }
     setSortOrder(order);
