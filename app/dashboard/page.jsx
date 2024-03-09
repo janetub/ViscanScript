@@ -16,104 +16,12 @@ import BindingDetails from "@/components/BindingDetails";
 import BindingTable from "../../components/BindingTable";
 import { addBindingsToFirestore } from '../../utils/addBindings'; // for testing
 
-// Sample data for binding requests
-const bindings = [
-  {
-    firstName: "RUEL",
-    middleName: "VAN",
-    lastName: "DIJK",
-    email: "21-1-00143@vsu.edu.ph",
-    id: "21-1-00143",
-    programCode: "BSCS",
-    title: "EXPLORING RESU-NET ARCHITECTURE FOR LAND COVER SEMANTIC SEGMENTATION IN BARANGAY HIBUNAWAN, BAYBAY CITY, LEYTE: A TRANSFER LEARNING APPROACH",
-    copies: 4,
-    pdfLink: "---",
-    docxLink: "---",
-    idLink: "---",
-    status: "Checked",
-    date: "7/11/2023",
-    remarks: "",
-    amount: 1000,
-    isPaid: false,
-    isClaimed: false,
-    ackID: "No. 23-164",
-    bindID: "No. 23-185",
-    priorityNum: 1,
-  },
-  { // from firebase
-    firstName: "Myra", // establish case type
-    middleName: "", // allow N/A
-    lastName: "Dudley",
-    email: "21-1-00123@vsu.edu.ph", // prefilled after login
-    id: "21-1-00123", // derive from email?
-    programCode: "BSAgri", // premade program codes
-    title: "Breeding Herd Management Practices of Dairy Buffalo at Philippine Carabao Center in Visayas State University Visca (PCC-VSU), Baybay City, Leyte", // establish case type
-    copies: 6, 
-    pdfLink: "---", // complete path, display file name only
-    docxLink: "---",
-    idLink: "---",
-    status: "Pending", // establish statuses
-    date: "7/11/2023", // establish appointment date format; include time?
-    remarks: "", // allow null
-    amount: 1200, // derive from copies?
-    isPaid: false, // derive from bindID?
-    isClaimed: false, // derive from status?
-    ackID: "No. 23-165", // establish numbering; can be turned to int?
-    bindID: "No. 23-186", 
-    priorityNum: 2,
-  },
-  { // from firebase
-    firstName: "Myra", // establish case type
-    middleName: "", // allow N/A
-    lastName: "Dudley",
-    email: "21-1-00123@vsu.edu.ph", // prefilled after login
-    id: "21-1-00123", // derive from email?
-    programCode: "BSAgri", // premade program codes
-    title: "Breeding Herd Management Practices of Dairy Buffalo at Philippine Carabao Center in Visayas State University Visca (PCC-VSU), Baybay City, Leyte", // establish case type
-    copies: 6, 
-    pdfLink: "---", // complete path, display file name only
-    docxLink: "---",
-    idLink: "---",
-    status: "Pending", // establish statuses
-    date: "7/11/2023", // establish appointment date format; include time?
-    remarks: "", // allow null
-    amount: 1200, // derive from copies?
-    isPaid: false, // derive from bindID?
-    isClaimed: false, // derive from status?
-    ackID: "No. 23-165", // establish numbering; can be turned to int?
-    bindID: "No. 23-186", 
-    priorityNum: 3,
-  },
-  { // from firebase
-    firstName: "Myra", // establish case type
-    middleName: "", // allow N/A
-    lastName: "Dudley",
-    email: "21-1-00123@vsu.edu.ph", // prefilled after login
-    id: "21-1-00123", // derive from email?
-    programCode: "BSAgri", // premade program codes
-    title: "Breeding Herd Management Practices of Dairy Buffalo at Philippine Carabao Center in Visayas State University Visca (PCC-VSU), Baybay City, Leyte", // establish case type
-    copies: 6, 
-    pdfLink: "---", // complete path, display file name only
-    docxLink: "---",
-    idLink: "---",
-    status: "Pending", // establish statuses
-    date: "7/11/2023", // establish appointment date format; include time?
-    remarks: "", // allow null
-    amount: 1200, // derive from copies?
-    isPaid: false, // derive from bindID?
-    isClaimed: false, // derive from status?
-    ackID: "No. 23-165", // establish numbering; can be turned to int?
-    bindID: "No. 23-186", 
-    priorityNum: 4,
-  },
-];
-
 /**
  * DashboardPage component represents the admin dashboard page.
  * It displays binding requests and provides functionality for managing user interactions.
  */
 function DashboardPage(props) {
-  const { user } = UserAuth(); // Get authentication state from context
+  const { user, setUser } = UserAuth(); // Get authentication state from context
   const router = useRouter(); // Next.js router instance
   const [showDetails, setShowDetails] = useState(false); // State for showing binding details modal
   const [selectedBinding, setSelectedBinding] = useState({}); // State for selected binding details
@@ -131,11 +39,13 @@ function DashboardPage(props) {
   };
 
   useEffect(() => {
-    // If user is not authenticated, redirect to login page
-    // if (!user) {
-    //   router.push("admin/login");
-    // }
-  }, [user, router]);
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    } else {
+      router.push("dashboard/login");
+    }
+  }, [router, setUser]);
 
   const addBindings = async () => {
     await addBindingsToFirestore(bindings);
