@@ -13,7 +13,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 
 function LoginPage(props) {
-  const { formSignIn } = UserAuth();
+  const { staffSignIn } = UserAuth();
   const router = useRouter();
   const [userExists, setUserExists] = React.useState(true);
 
@@ -23,18 +23,17 @@ function LoginPage(props) {
       setUserExists(true); // Reset userExists state to true before attempting sign-in
   
       // Sign in with Google
-      const { exist } = await formSignIn(); 
+      const { exist, user } = await staffSignIn(); 
   
-      // If user exists, redirect to admin page
       if (exist) {
+        localStorage.setItem('user', JSON.stringify(user));
         router.push("/dashboard");
       } else {
-        // User does not exist, store this information in local storage
-        //window.location.reload();
+        window.location.reload();
         localStorage.setItem('userExists', 'false');
       }
     } catch (error) {
-      console.error("Error occurred during sign-in:", error);
+      console.error("Error occurred during sign-in: ", error);
     }
   };  
 
@@ -42,7 +41,6 @@ function LoginPage(props) {
     const userExistsInStorage = localStorage.getItem('userExists');
     if (userExistsInStorage === 'false') {
       setUserExists(false);
-      // Clear the item from local storage
       localStorage.removeItem('userExists');
     }
   }, []);
@@ -54,10 +52,10 @@ function LoginPage(props) {
           <div className="flex flex-col self-stretch my-auto text-base leading-6 max-md:mt-10 max-md:max-w-full">
             <img
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/5818be7a04459f35b2955cff0aa862ebffc156e428161f60b97611671944369b?"
-              className="self-center max-w-full aspect-[2.22] w-[434px]"
+              src="https://cdn.builder.io/api/v1/image/assets%2Fe4fb5c3f22154b41a48f253e88461b6a%2Fd2a1dd3df5d142afa65ab6c39126eb13"
+              className="self-center max-w-full"
             />
-            <div className="flex flex-col items-start px-10 py-11 mt-10 bg-white rounded-xl shadow-sm max-md:px-5 max-md:max-w-full">
+            <div className="flex flex-col items-start px-10 py-11 bg-white rounded-xl shadow-sm max-md:px-5 max-md:max-w-full">
               <div className="text-2xl font-bold leading-8 text-violet-900">
                 Hi, Welcome back!
               </div>
@@ -94,7 +92,7 @@ function LoginPage(props) {
               VSU Bind
             </div>
             <div className="relative mt-4 text-base font-medium leading-6 text-center whitespace-nowrap text-neutral-500">
-              Thesis Binding Made Easy
+              Thesis Binding Request Made Easy
             </div>
             <div className="flex relative flex-col justify-center py-2.5 pr-14 pl-5 mt-4 w-28 max-w-full max-md:pr-5">
               <div className="shrink-0 h-1.5 bg-violet-400 rounded-xl" />

@@ -71,12 +71,14 @@ export const AuthContextProvider = ({ children }) => {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       console.log("Student sign-in result: ", result);
-      // Check if user exists in multiple collections (passed as an array)
-      const collectionsToCheck = ["collection1", "collection2", "collection3"]; // collections to check
-      const exists = await checkIfEmailExistsInCollections(result.user.email, collectionsToCheck);
-      console.log("Document data:", result.user.email);
-      if (!exists) {
-        console.log("User does not exist in any of the specified collections.");
+
+      // Check if user's email ends with @vsu.edu.ph
+      const email = result.user.email;
+      const isVSUEmail = email.endsWith('@vsu.edu.ph');
+      console.log("Email:", email);
+
+      if (!isVSUEmail) {
+        console.log("User's email does not end with @vsu.edu.ph.");
         return { exist: false, user: result.user };
       }
       return { exist: true, user: result.user };

@@ -50,10 +50,10 @@ function LoginPage(props) {
       <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
         <div className="flex flex-col w-2/5 max-md:ml-0 max-md:w-full">
           <div className="flex flex-col self-stretch my-auto text-base leading-6 max-md:mt-10 max-md:max-w-full">
-            <img
+          <img
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/5818be7a04459f35b2955cff0aa862ebffc156e428161f60b97611671944369b?"
-              className="self-center max-w-full aspect-[2.22] w-[434px]"
+              src="https://cdn.builder.io/api/v1/image/assets%2Fe4fb5c3f22154b41a48f253e88461b6a%2Fd2a1dd3df5d142afa65ab6c39126eb13"
+              className="self-center max-w-full"
             />
             <div className="flex flex-col items-start px-10 py-11 mt-10 bg-white rounded-xl shadow-sm max-md:px-5 max-md:max-w-full">
               <div className="text-2xl font-bold leading-8 text-violet-900">
