@@ -1,14 +1,9 @@
-// import React from "react";
-// import Image from "next/image";
-// // import loader from "./spinner.gif";
+import React from "react";
 
-// const Spinner = () => {
-//   return (
-//     <div className="w-full h-screen flex items-center justify-center">
-//       {/* <Image src={loader} alt="loading.." /> */}
-//       <p>ludeng...</p>
-//     </div>
-//   );
-// };
+const Spinner = () => (
+  <div className="flex justify-center items-center">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+);
 
-// export default Spinner;
+export default Spinner;

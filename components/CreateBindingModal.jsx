@@ -1,6 +1,6 @@
 /**
  * components/CreateBindingModal.jsx
- * 
+ *
  * TODO: Implement
  */
 
@@ -184,14 +184,21 @@ const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
             >
               Upload manuscript in PDF format (.pdf)
             </label>
-            <input
+            <div className="flex flex-col justify-center items-end py-3.5 pr-3 pl-16 mt-2.5 rounded-lg border border border-solid max-md:pl-5 max-md:max-w-full">
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/aec286a5f53269ba60cdc4b9f3d6ac6ea9f7b61d36b2c72458eb50ebadd4d4e3?placeholderIfAbsent=true"
+                className="aspect-[1.12] w-[19px]"
+              />
+            </div>
+            {/* <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="pdfFile"
               name="pdfFile"
               type="file"
               accept=".pdf"
               onChange={handleChange}
-            />
+            /> */}
           </div>
 
           {/* DOCX File Upload field */}
@@ -202,14 +209,21 @@ const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
             >
               Upload manuscript in Word format (.docx)
             </label>
-            <input
+            <div className="flex flex-col justify-center items-end py-3.5 pr-3 pl-16 mt-2.5 rounded-lg border border border-solid max-md:pl-5 max-md:max-w-full">
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/aec286a5f53269ba60cdc4b9f3d6ac6ea9f7b61d36b2c72458eb50ebadd4d4e3?placeholderIfAbsent=true"
+                className="aspect-[1.12] w-[19px]"
+              />
+            </div>
+            {/* <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="docxFile"
               name="docxFile"
               type="file"
               accept=".docx"
               onChange={handleChange}
-            />
+            /> */}
           </div>
 
           {/* ID Photo Upload field */}
@@ -220,14 +234,21 @@ const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
             >
               Upload 2x2 ID photo (.jpg/.jpeg)
             </label>
-            <input
+            <div className="flex flex-col justify-center items-end py-3.5 pr-3 pl-16 mt-2.5 rounded-lg border border border-solid max-md:pl-5 max-md:max-w-full">
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/aec286a5f53269ba60cdc4b9f3d6ac6ea9f7b61d36b2c72458eb50ebadd4d4e3?placeholderIfAbsent=true"
+                className="aspect-[1.12] w-[19px]"
+              />
+            </div>
+            {/* <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="idPhoto"
               name="idPhoto"
               type="file"
               accept=".jpg, .jpeg"
               onChange={handleChange}
-            />
+            /> */}
           </div>
 
           {/* Appointment Date field */}
@@ -250,7 +271,7 @@ const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-white hover:bg-white-300 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border"
               type="button"
               onClick={onClose}
             >
