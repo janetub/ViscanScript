@@ -2,6 +2,7 @@
  * components/BindingTable.jsx
  * 
  * TODO: add more search filter options
+ * TOFIX: orders return after search is cleared
  */
 
 import { useState, useEffect } from "react";
