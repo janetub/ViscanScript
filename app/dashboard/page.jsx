@@ -24,6 +24,7 @@ import Tabs from '@/components/BindingOrderTabs';
 function DashboardPage(props) {
   const { user, setUser } = UserAuth(); // Get authentication state from context
   const router = useRouter(); // Next.js router instance
+  const [loading, setLoading] = useState(true);
   const [showDetails, setShowDetails] = useState(false); // State for showing binding details modal
   const [selectedBinding, setSelectedBinding] = useState({}); // State for selected binding details
   const [ bindings, setBindings ] = useState([]);
@@ -48,6 +49,7 @@ function DashboardPage(props) {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
+      setLoading(false);
     } else {
       router.push("dashboard/login");
     }
@@ -55,6 +57,26 @@ function DashboardPage(props) {
 
   const addBindings = async () => {
     await addBindingsToFirestore(bindings);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col px-6 py-5 bg-white">
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-xl text-gray-700">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('user'); 
+    setUser(null); // Clear user state
+    router.push("dashboard/login"); // Redirect to login page
   };
 
   return (
@@ -67,6 +89,14 @@ function DashboardPage(props) {
             />
         </div>
         <div className="flex gap-5 justify-between self-end">
+        <div className="flex justify-end mt-4">
+        <button
+          className="text-sm text-violet-800 font-medium hover:underline focus:outline-none"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
       <div className="flex flex-col justify-center items-center self-start w-9 h-9 bg-violet-100 rounded-lg">
         <div className="flex justify-center items-center px-2 w-9 h-9 bg-violet-100 rounded-lg">
           <div className="flex overflow-hidden relative flex-col justify-center items-center w-5 aspect-square">
