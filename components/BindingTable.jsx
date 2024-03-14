@@ -2,7 +2,7 @@
  * components/BindingTable.jsx
  * 
  * TODO: add more search filter options
- * TOFIX: orders return after search is cleared
+ * TOFIX: orders return after search is cleared or query is reduced and or changed
  */
 
 import { useState, useEffect } from "react";
@@ -15,10 +15,10 @@ const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus })
   const [ sortOrder, setSortOrder ] = useState('newest');
   const [ showSortOptions, setShowSortOptions] = useState(false);
   const [ itemsPerPage, setItemsPerPage ] = useState(3);
-  const [ displayedBindings, setDisplayedBindings ] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [ displayedBindings, setDisplayedBindings ] = useState([]);
   const [currentBindings, setCurrentBindings] = useState([]);
 
   const handleSearch = (e) => {
@@ -93,19 +93,23 @@ const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus })
   };
 
   const handleSortChange = (order) => {
+    let sortedBindings = [...displayedBindings];
     if (order === 'newest') {
+      sortedBindings.sort((a, b) => a.priorityNum - b.priorityNum);
       setCurrentPage(1);
     } else if (order === 'oldest') {
-      const lastPage = Math.ceil(currentBindings.length / itemsPerPage);
+      sortedBindings.sort((a, b) => b.priorityNum - a.priorityNum);
+      const lastPage = Math.ceil(sortedBindings.length / itemsPerPage);
       setCurrentPage(lastPage);
     }
+    setDisplayedBindings(sortedBindings);
     setSortOrder(order);
     setShowSortOptions(false);
-  }
+  };  
 
   return (
     <div className="flex flex-col w-full max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col px-5 pt-4 pb-12 w-full rounded border border-solid bg-neutral-50 border-[color:var(--Grey-200,#F5F5F5)] max-md:mt-5 max-md:max-w-full">
+      <div className="flex flex-col px-5 pt-4 pb-3 w-full rounded border border-solid bg-neutral-50 border-[color:var(--Grey-200,#F5F5F5)] max-md:mt-5 max-md:max-w-full">
         <div className="flex gap-5 justify-between max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
           <div className="flex gap-2 justify-center px-4 py-2 my-auto text-sm font-medium leading-5 whitespace-nowrap rounded-xl border border-solid bg-neutral-100 border-[color:var(--DeepPurple-50,#EDE7F6)] text-neutral-400">
             <img
@@ -172,11 +176,11 @@ const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus })
                   onClick={() => toggleShowDetails(binding)}
                 >
                   <div className="flex gap-2 justify-between self-stretch font-bold whitespace-nowrap">
-                    <img
+                    {/* <img
                       loading="lazy"
                       srcSet="..."
                       className="w-8 aspect-square"
-                    />
+                    /> */}
                     <div className="grow my-auto">{binding.name}</div>
                   </div>
                   <div className="flex-auto self-stretch my-auto text-xs">

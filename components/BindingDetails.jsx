@@ -15,7 +15,7 @@ const BindingDetails = ({ binding, onClose }) => {
           </button>
           <div className="flex gap-3 justify-between items-start">
             <div className="flex justify-center items-center px-5 text-2xl font-bold leading-8 text-white whitespace-nowrap bg-violet-300 rounded-xl aspect-[1.03] h-[60px]">
-              16
+              {binding.priorityNum}
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">

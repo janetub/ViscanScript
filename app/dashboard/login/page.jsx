@@ -93,7 +93,7 @@ function LoginPage(props) {
               Viscan Script
             </div>
             <div className="relative mt-4 text-base font-medium leading-6 text-center whitespace-nowrap text-neutral-500">
-              Thesis Binding Order Management Made Easy
+              Thesis Binding Order Request and Management Made Easy
             </div>
             <div className="flex relative flex-col justify-center items-center py-2.5 mt-4 w-28 max-w-full max-md:pr-5">
               <div className="shrink-0 h-1.5 bg-violet-400 rounded-xl w-full" />
