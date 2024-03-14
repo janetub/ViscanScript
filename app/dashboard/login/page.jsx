@@ -29,7 +29,7 @@ function LoginPage(props) {
         localStorage.setItem('user', JSON.stringify(user));
         router.push("/dashboard");
       } else {
-        window.location.reload();
+        window.location.reload();  
         localStorage.setItem('userExists', 'false');
       }
     } catch (error) {
@@ -90,10 +90,10 @@ function LoginPage(props) {
               </div>
             </div>
             <div className="relative text-4xl font-bold leading-10 text-center whitespace-nowrap mt-[717px] text-neutral-800 max-md:mt-10">
-              VSU Bind
+              Viscan Script
             </div>
             <div className="relative mt-4 text-base font-medium leading-6 text-center whitespace-nowrap text-neutral-500">
-              Thesis Binding Request Made Easy
+              Thesis Binding Order Management Made Easy
             </div>
             <div className="flex relative flex-col justify-center items-center py-2.5 mt-4 w-28 max-w-full max-md:pr-5">
               <div className="shrink-0 h-1.5 bg-violet-400 rounded-xl w-full" />
