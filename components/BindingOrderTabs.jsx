@@ -1,6 +1,3 @@
-
-import logo from "@/assets/logo.png";
-
 // Updated Tab component with styles
 //flex flex-col gap-3 justify-between p-3 cursor-pointer pl-9 whitespace-nowrap max-md:pl-5
 // todo: image source

@@ -1,9 +1,6 @@
 /**
  * app/dashboard/login/page.jsx
  * 
- * TODO: 
- * improve slogan
- * change right panel graphic to more relevant
  */
 
 "use client";
@@ -11,6 +8,9 @@ import { useEffect } from "react";
 import { UserAuth } from "@/context/AuthContext";
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png"
+import googleLogo from "@/public/images/google.svg"
 
 function LoginPage(props) {
   const { staffSignIn } = UserAuth();
@@ -50,9 +50,10 @@ function LoginPage(props) {
       <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
         <div className="flex flex-col w-2/5 max-md:ml-0 max-md:w-full">
           <div className="flex flex-col self-stretch my-auto text-base leading-6 max-md:mt-10 max-md:max-w-full">
-            <img
+            {/* VSU Script Logo */}
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets%2Fe4fb5c3f22154b41a48f253e88461b6a%2Fd2a1dd3df5d142afa65ab6c39126eb13"
+              src={vsuScript}
               className="self-center max-w-full"
             />
             <div className="flex flex-col items-start px-10 py-11 bg-white rounded-xl shadow-sm max-md:px-5 max-md:max-w-full">
@@ -70,9 +71,9 @@ function LoginPage(props) {
                 onClick={handleSignIn}
               >
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/bc46bf46b46bd2574f8bfe907942abe3811ef34f55f793132597751423ae3b13?"
+                    src={googleLogo}
                     className="w-8 aspect-square"
                   />
                   <span>Sign in with Google</span>

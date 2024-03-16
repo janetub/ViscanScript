@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from "react";
 import { fetchCollectionData } from "@/utils/getDocs";
+import Preloader from "./Preloader";
 
 const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus }) => {
   const [ loading, setLoading ] = useState(true);
@@ -164,7 +165,11 @@ const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus })
         </div>
         <div className="flex flex-col justify-center px-2 mt-4 text-sm font-medium rounded-xl text-neutral-400 max-md:max-w-full">
           {loading ? (
-            <div className="text-center">Loading...</div>
+            <div className="flex justify-center mb-8 items-center w-full h-full">
+              <div className="w-10 h-10" style={{ margin: "auto" }}>
+                <Preloader color="grey" />
+              </div>
+            </div>
           ) : (
             currentBindings.length === 0 ? (
               <div className="text-center">No results found</div>

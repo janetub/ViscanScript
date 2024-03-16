@@ -11,11 +11,13 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserAuth } from "@/context/AuthContext";
-import logo from "../../assets/logo.png";
 import BindingDetails from "@/components/BindingDetails";
 import BindingTable from "@/components/BindingTable";
 import { addBindingsToFirestore } from '../../utils/addBindings'; // for testing
 import Tabs from '@/components/BindingOrderTabs';
+import Preloader from "@/components/Preloader";
+import Image from "next/image";
+
 
 /**
  * DashboardPage component represents the admin dashboard page.
@@ -61,10 +63,13 @@ function DashboardPage(props) {
 
   if (loading) {
     return (
-      <div className="flex flex-col px-6 py-5 bg-white">
-        <div className="flex justify-center items-center h-screen">
-          <p className="text-xl text-gray-700">Loading...</p>
-        </div>
+      // <div className="flex flex-col px-6 py-5 bg-white">
+      //   <div className="flex justify-center items-center h-screen">
+      //     <p className="text-xl text-gray-700">Loading...</p>
+      //   </div>
+      // </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <Preloader />
       </div>
     )
   }
@@ -106,11 +111,6 @@ function DashboardPage(props) {
                   loading="lazy"
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/d3ad38adf33bf466063e09e5a4b565f38c8d4cf76717134f5fee17c397b99a16?apiKey=e4fb5c3f22154b41a48f253e88461b6a&"
                   className="object-cover absolute inset-0 size-full"
-                />
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/113a0ad00e765ad9fdd40265da70669fadb4de3ebab551726f6bf2321a455672?apiKey=e4fb5c3f22154b41a48f253e88461b6a&"
-                  className="w-full aspect-square"
                 />
               </div>
             </div>
@@ -165,14 +165,15 @@ function DashboardPage(props) {
               </div>
             </div>
           </div>
+          {/* Table */}
           <div className="flex flex-col ml-5 w-[83%] max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col grow px-4 py-5 w-full bg-sky-100 rounded-xl max-md:mt-5 max-md:max-w-full">
+            <div className="flex flex-col px-4 py-5 w-full bg-sky-100 rounded-xl max-md:mt-5 max-md:max-w-full">
               <div className="justify-center items-start py-2 pl-4 text-base font-medium bg-white rounded-xl text-neutral-800 max-md:pr-5 max-md:max-w-full">
                 <button>Binding Requests</button> {/* onClick={addBindings} For testing */}
               </div>
               <div className="flex flex-col px-5 pt-5 mt-4 bg-white rounded-xl max-md:max-w-full">
                 <div className="pb-2.5 mb-4 max-md:max-w-full">
-                  <div className="flex gap-0 max-md:flex-col max-md:gap-0 max-md:">
+                  <div className="flex gap-0  max-md:flex-col max-md:gap-0 max-md: ">
                     <BindingTable
                       toggleShowDetails={handleOpen}
                       collectionName="bindings"

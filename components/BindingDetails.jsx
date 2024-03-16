@@ -1,4 +1,14 @@
-import logo from "../assets/logo.png";
+/**
+ * 
+ * 
+* attributions
+ * <a href="https://www.flaticon.com/free-icons/attach" title="attach icons">Attach icons created by Freepik - Flaticon</a>
+ * 
+ */
+
+import Image from "next/image";
+import vb from "@/public/images/vb.png";
+import attachIcon from "@/public/images/attach.png";
 
 const BindingDetails = ({ binding, onClose }) => {
   return (
@@ -22,11 +32,6 @@ const BindingDetails = ({ binding, onClose }) => {
             <div className="flex justify-center items-center px-2.5 mt-3 border border-solid border-[color:var(--Blue-600,#1E88E5)] h-[155px] rounded-[100px] w-[155px]">
               <div className="flex overflow-hidden relative flex-col px-px pb-3.5 w-full aspect-square">
                 <div className="relative shrink-0 bg-blue-300 rounded-full h-[118px]" />
-                <img
-                  loading="lazy"
-                  src={logo}
-                  className="object-cover absolute inset-0 size-full"
-                />
               </div>
             </div>
           </div>
@@ -76,6 +81,7 @@ const BindingDetails = ({ binding, onClose }) => {
           </div>
           <div className="flex gap-0 justify-between mt-7 whitespace-nowrap text-neutral-800">
             <div className="grow">Attachment</div>
+            {/* Drop down icon */}
             <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/36b256fbaad2472e7560c418a759003ae55ae5db0e7d2bc445618c056c108363?"
@@ -83,10 +89,10 @@ const BindingDetails = ({ binding, onClose }) => {
             />
           </div>
           <div className="flex gap-3 justify-between mt-3 text-xs leading-5 whitespace-nowrap">
-            <img
+            <Image
               loading="lazy"
-              srcSet="..."
-              className="aspect-square w-[42px]"
+              src={attachIcon}
+              className="shrink-0 h-6 w-6 aspect-square"
             />
             <div className="flex flex-col flex-1">
               <div className="text-neutral-800">File Name.docx</div>
@@ -94,10 +100,10 @@ const BindingDetails = ({ binding, onClose }) => {
             </div>
           </div>
           <div className="flex gap-3 justify-between mt-3 text-xs leading-5 whitespace-nowrap">
-            <img
+            <Image
               loading="lazy"
-              srcSet="..."
-              className="aspect-square w-[42px]"
+              src={attachIcon}
+              className="shrink-0 h-6 w-6 aspect-square"
             />
             <div className="flex flex-col flex-1">
               <div className="text-neutral-800">File Name.pdf</div>
