@@ -4,19 +4,19 @@
  * submission form
  */
 
-import React from 'react'
+"use client";
 
-const page = () => {
-  return (
-    <div className="flex flex-col px-6 py-5 bg-white">
-      <div className="flex justify-center items-center h-screen">
-        {/* Empty canvas */}
-        <p className="text-xl text-gray-700">Submission form page is coming soon...</p>
-      </div>
-      <div>
-      </div>
-    </div>
-  )
-}
+import CreateBindingModal from "@/components/CreateBindingModal";
+import { UserAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
-export default page
+const CreateBindingePage = () => {
+  const { user, isLoading } = UserAuth();
+  const router = useRouter();
+  const isSignedIn = user !== null;
+
+  return <CreateBindingModal isOpen={true} />;
+};
+
+export default CreateBindingePage;
