@@ -9,7 +9,7 @@ This project centers on the development of a web-based solution designed to enha
 | VB.000.000            | v0.0.1      | 2024-02-06 19:30:00    |
 | VB.001.000            | v0.1.0      | 2024-02-12 14:49:00    |
 | VB.026.001            | v2.6.1      | 2024-03-04 12:10:00    |
-| ----------            | ------      | -------------------    |
+| VB.029.000            | v2.9.0      | 2024-03-21 17:05:00    |
 
 ---
 
@@ -31,12 +31,6 @@ This project centers on the development of a web-based solution designed to enha
    - Connected Google Sign-In to Firebase collections for account validation and authentication
    - Designed a three-panel canvas for the web app dashboard page, including an app logo in the header
    - Developed a registration form for staff members to gain access to the library staff dashboard
-   
-**Known Issues:**
-**Form Visibility:** Post-registration, the form doesn’t hide or redirect. Exit mechanism missing.
-**Functionality:** Registration form lacks full functionality, validation, and sanitization.
-**Design:** Interface doesn’t match Figma mockup, needs improvement.
-**Modularity:** Some modules, like dashboard panels and navbar, are disconnected.
 
 ##  VB.026.001 Release Notes
 **Major changes**
@@ -59,6 +53,19 @@ This project centers on the development of a web-based solution designed to enha
    Added a loading indicator during data fetching from Firebase.
    Centralized bindings in Firestore
 
+##  VB.029.000 Release Notes
+**Major changes**
+
+- Implementation of Binding Request and Submission Form
+-  Email Authentication Enhancement:
+   - The system exclusively accepts VSU email addresses during sign-in.
+- Enhance Asset Integrity and Implement Tab Bindings:
+   - Implemented the binding of tabs and filters. The active tab now determines the filters applied. These tabs represent order statuses, allowing for efficient status filtering.
+- Enhance user interface and access control:
+   - Adjusted dashboard visibility. The dashboard now renders conditionally based on user authentication status.
+   - Added loading indicator. A loading page indicator is now displayed while the dashboard is loading.
+   - Refined hint and warning messages.
+- Add preloader and restructure project for local asset hosting
 
 ---
 
