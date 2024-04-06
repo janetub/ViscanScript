@@ -10,7 +10,7 @@ import favicon from "@/public/images/vb.png";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "ViscanScript",
+  title: "Viscan Script",
   description: "",
   icons:{
     icon: {favicon},
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       <Head>
         <link rel="icon" href={favicon}/>
       </Head>
-      <body className={inter.className}>
+      <body className="bg-white text-black dark:bg-black dark:text-white">
         <AuthContextProvider>
           <div className="shadow-md">
           {/* <Navbar /> */}

@@ -1,9 +1,10 @@
 /**
+ * components/BindingDetails.jsx
  * 
+ * The side panel or preview pane containing detauls of the active or selected Binding Order Request
  * 
-* attributions
+ * attributions
  * <a href="https://www.flaticon.com/free-icons/attach" title="attach icons">Attach icons created by Freepik - Flaticon</a>
- * 
  */
 
 import Image from "next/image";
@@ -16,7 +17,7 @@ const BindingDetails = ({ binding, onClose }) => {
       <div className="flex flex-col grow max-md:mt-5">
         <div className="relative flex flex-col pt-2.5 pr-3 pb-2.5 pl-3 w-full bg-sky-100 rounded-xl">
           <button
-            className="absolute top-0 right-0 mt-4 mr-4 text-gray-700 bg-red-100 py-2 px-3 rounded-full hover:bg-gray-3"
+            className="absolute top-0 right-0 mt-4 mr-4 text-gray-700 bg-red-100 py-1 px-3 rounded-full hover:bg-gray-3"
             onClick={onClose}
           >
             <strong class="text-xl align-center cursor-pointer alert-del">
@@ -30,13 +31,13 @@ const BindingDetails = ({ binding, onClose }) => {
           </div>
           <div className="flex flex-col items-center justify-center">
             <div className="flex justify-center items-center px-2.5 mt-3 border border-solid border-[color:var(--Blue-600,#1E88E5)] h-[155px] rounded-[100px] w-[155px]">
-              <div className="flex overflow-hidden relative flex-col px-px pb-3.5 w-full aspect-square">
-                <div className="relative shrink-0 bg-blue-300 rounded-full h-[118px]" />
+              <div className="flex overflow-hidden relative flex-col px-px w-full aspect-square">
+                <div className="relative shrink-0 bg-blue-300 rounded-full h-full w-full" />
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">
-          <div className="self-center mt-3 text-xl font-bold text-center whitespace-nowrap text-neutral-800">
+          <div className="self-center mt-3 text-xl font-bold text-center whitespace text-neutral-800">
             {`${binding.firstName} ${binding.middleName ? binding.middleName + ' ' : ''}${binding.lastName}`}
           </div>
             <div className="self-center mt-2.5 text-sm font-semibold text-center text-neutral-500">
@@ -62,8 +63,8 @@ const BindingDetails = ({ binding, onClose }) => {
             {binding.title}
           </div>
           <div className="mt-7 text-neutral-800">Status</div>
-          <div className="flex gap-1 justify-end self-start px-1.5 py-px mt-2 text-xs tracking-wide leading-4 text-yellow-400 whitespace-nowrap rounded-xl">
-            <div className="justify-center px-2 py-1 bg-yellow-50 aspect-[2.29] rounded-[100px]">
+          <div className="flex justify-center  gap-1 self-start px-1.5 py-px mt-2 text-xs tracking-wide leading-4 text-yellow-400 whitespace-nowrap rounded-xl">
+            <div className="justify-center px-2 py-1 bg-yellow-50 rounded-[100px]">
               {binding.status}
             </div>
             <img

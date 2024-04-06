@@ -1,6 +1,6 @@
 "use client";
 
-import CreateBindingModal from "@/components/CreateBindingModal";
+import CreateBindingModal from "@/components/BindingRequestForm";
 import React from "react";
 
 const CreateBindingePage = () => {

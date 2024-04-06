@@ -1,7 +1,7 @@
 /**
- * components/CreateBindingModal.jsx
+ * components/BindingRequestForm.jsx
  * 
- * TODO: Implement
+ * Binding Request Submission Form
  */
 
 import { createTransaction } from "@/api/transactions";
@@ -21,7 +21,8 @@ const s = {
   amount: 600,
 };
 
-const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
+const   CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
+
   const [formData, setFormData] = useState({
     name: "",
     studentNumber: "",
@@ -62,11 +63,9 @@ const CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
     <div className="bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex justify-center items-start">
-      <div className="bg-white p-5 rounded shadow-lg w-1/2">
+      <div className="bg-white p-5 rounded-lg shadow-lg w-1/2 my-5">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label

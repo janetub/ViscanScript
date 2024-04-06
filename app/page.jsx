@@ -1,18 +1,21 @@
 import React from 'react';
 // import Navbar from './Navbar';
+import { ThemeProvider } from 'next-themes';
 
 
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col px-6 py-5 bg-white">
-      <div className="flex justify-center items-center h-screen">
-        {/* Empty canvas */}
-        <p className="text-xl text-gray-700">Home page is coming soon...</p>
+    <ThemeProvider attribute='class'>
+      <div className="flex flex-col px-6 py-5 bg-white">
+        <div className="flex justify-center items-center h-screen">
+          {/* Empty canvas */}
+          <p className="text-xl text-gray-700">Home page is coming soon...</p>
+        </div>
+        <div>
+        </div>
       </div>
-      <div>
-      </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
