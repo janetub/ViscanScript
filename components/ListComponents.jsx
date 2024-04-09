@@ -3,7 +3,7 @@
  */
 
 import { useState } from "react";
-import CreateBindingModal from "./CreateBindingModal";
+import CreateBindingModal from "./BindingRequestForm";
 import ListItem from "./ListItem";
 
 const ListComponent = ({ items, handleOpenItem, refetch }) => {
