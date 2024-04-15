@@ -10,7 +10,7 @@ function Sidebar() {
     <div className="sticky top-0 flex flex-col justify-between bg-gray-800 w-20 h-screen">
       <div className="flex flex-col items-center">
         <div className="w-full bg-blue-800 p-4">
-          <Image src={logo} alt="VB Logo" className="h-12 mx-auto" />
+          <Image src={logo} alt="VB Logo" className="h-12 mx-auto"/>
         </div>
         {/* Replace each icon div with Tailwind classes */}
         <div className="mb-4">

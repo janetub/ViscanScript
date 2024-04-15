@@ -6,7 +6,7 @@
 
 import React from 'react'
 
-const page = () => {
+const AdminPage = () => {
   return (
     <div className="flex flex-col px-6 py-5 bg-white">
       <div className="flex justify-center items-center h-screen">
@@ -19,4 +19,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AdminPage

@@ -1,3 +1,4 @@
+import Image from "next/image";
 /**
  * components/BindingTable.jsx
  * 

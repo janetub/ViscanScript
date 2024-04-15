@@ -40,7 +40,7 @@ const UserInfoCard = ({ userInfo, onClose }) => {
           </div>
         </div>
         <div className="flex flex-col items-center mb-4">
-          <img
+          <Image
             src={logo}
             alt="Profile"
             className="w-24 h-24 rounded-full mb-2"

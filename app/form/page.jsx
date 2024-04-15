@@ -9,11 +9,11 @@
 import CreateBindingModal from "@/components/BindingRequestForm";
 import { UserAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
-import LoginPage from "../login/page";
+import LoginPage from "../../components/SignInForm";
 import Preloader from "@/components/Preloader";
 
 const CreateBindingePage = () => {
-  const { user, setUser, logOut, authChecking } = UserAuth();
+  const { isLoggedIn, currentUser, setUser, logOut, authChecking } = UserAuth();
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
@@ -27,8 +27,8 @@ const CreateBindingePage = () => {
     }
   }, [setUser]);
 
-  if (!user && !loading) {
-    return <LoginPage callingComponent="CreateBindingePage" />;
+  if (!isLoggedIn) {
+    return <LoginPage callingComponent="form" />;
   }
 
   const handleLogout = () => {
@@ -48,7 +48,7 @@ const CreateBindingePage = () => {
   }
 
   return(
-    <div className="flex flex-col bg-white min-h-scree">
+    <div className="flex flex-col bg-white min-h-screen">
       <div className="justify-between items-between">
         <div className="gap-5 justify-center self-end">
           <div className="flex justify-end mt-4">
@@ -56,7 +56,7 @@ const CreateBindingePage = () => {
               className="text-sm text-violet-800 font-medium hover:underline focus:outline-none"
               onClick={handleLogout}
             >
-              Signout {user.displayName || user.email}
+              Signout {currentUser.displayName || currentUser.email}
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 /**
- * app/admin/page.jsx
+ * app/dashboard/page.jsx
  * 
  * This file defines the DashboardPage component, which represents the staffs' dashboard page for the admin section of the application.
  * It includes functionality for displaying binding requests and managing user interactions.
@@ -11,11 +11,12 @@ import { useState, useEffect } from "react";
 import { UserAuth } from "@/context/AuthContext";
 import BindingDetails from "@/components/BindingDetails";
 import BindingTable from "@/components/BindingTable";
-import { addBindingsToFirestore } from '../../utils/addBindings'; // for testing
 import Tabs from '@/components/BindingOrderTabs';
 import Preloader from "@/components/Preloader";
 import Image from "next/image";
-import LoginPage from "../login/page";
+import LoginPage from "@/components/SignInForm";
+import { addBindingsToFirestore } from "@/utils/addBindings";
+import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png";
 
 
 /**
@@ -23,11 +24,19 @@ import LoginPage from "../login/page";
  * It displays binding requests and provides functionality for managing user interactions.
  */
 function DashboardPage(props) {
-  const { user, setUser, logOut, authChecking, isLoggedIn } = UserAuth(); // Get authentication state from context
+  const { currentUser, isLoggedIn, logOut, setIsAuthChecking } = UserAuth(); // Get authentication state from context
   const [showDetails, setShowDetails] = useState(false); // State for showing binding details modal
   const [selectedBinding, setSelectedBinding] = useState({}); // State for selected binding details
   const [ bindings, setBindings ] = useState([]);
   const [selectedTab, setSelectedTab] = useState('all');
+  
+  if (!isLoggedIn) {
+    return <LoginPage callingComponent="dashboard" />;
+  }
+
+  const handleLogout = () => {
+    logOut(); 
+  };
 
   // Open binding details modal
   const handleOpen = (binding) => {
@@ -48,39 +57,15 @@ function DashboardPage(props) {
     await addBindingsToFirestore(bindings);
   };
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [setUser]);
-
-  if (!isLoggedIn) {
-    return <LoginPage callingComponent="DashboardPage" />;
-  }
-
-  const handleLogout = () => {
-    logOut();
-    localStorage.removeItem('user'); 
-    window.location.reload();  
-  };
-
-  if (authChecking) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Preloader />
-      </div>
-    )
-  }
-
   return(
-    <div className="flex flex-col px-6 py-5 bg-white min-h-scree">
+    <div className="flex flex-col px-6 py-5 bg-white min-h-screen">
       <div className="flex gap-5 justify-between items-between">
         <div className="flex">
-          <img
+          <Image
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets%2Fe4fb5c3f22154b41a48f253e88461b6a%2Fd2a1dd3df5d142afa65ab6c39126eb13"
-            style={{ width: '100px', height: 'auto' }}
+            src={vsuScript}
+            className="w-20 self-center"
+            alt="VSU Script Logo"
           />
         </div>
         <div className="flex gap-5 justify-center self-end">
@@ -89,7 +74,7 @@ function DashboardPage(props) {
               className="text-sm text-violet-800 font-medium hover:underline focus:outline-none"
               onClick={handleLogout}
             >
-              Signout 
+              Signout
             </button>
           </div>
           {/* Notification bell */}
