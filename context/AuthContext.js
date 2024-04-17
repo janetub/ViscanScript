@@ -15,7 +15,6 @@ import {
 } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { checkIfUserExists } from "@/utils/userUtils";
-import Preloader from "@/components/Preloader";
 
 const AuthContext = createContext();
 
@@ -34,12 +33,12 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setIsAuthChecking(false);
     });
     return () => unsubscribe();
   }, [auth]);
   
   const redirect = async () => {
-    setIsFailedAttempt(false);
     const provider = new GoogleAuthProvider();
     try {
       await signInWithRedirect(auth, provider);
@@ -71,8 +70,8 @@ export const AuthContextProvider = ({ children }) => {
     }
     if (!exists) {
       console.log(`User does not exist in the '${page}' authorized users collection(s).`);
-      logOut();
       setIsFailedAttempt(true);
+      logOut();
     } else {
       setIsLoggedIn(true);
     }

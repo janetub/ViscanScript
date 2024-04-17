@@ -23,10 +23,10 @@ import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png";
  * DashboardPage component represents the admin dashboard page.
  * It displays binding requests and provides functionality for managing user interactions.
  */
-function DashboardPage(props) {
-  const { currentUser, isLoggedIn, logOut, setIsAuthChecking } = UserAuth(); // Get authentication state from context
-  const [showDetails, setShowDetails] = useState(false); // State for showing binding details modal
-  const [selectedBinding, setSelectedBinding] = useState({}); // State for selected binding details
+function DashboardPage() {
+  const { isLoggedIn, logOut } = UserAuth();
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedBinding, setSelectedBinding] = useState({});
   const [ bindings, setBindings ] = useState([]);
   const [selectedTab, setSelectedTab] = useState('all');
   

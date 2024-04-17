@@ -12,61 +12,32 @@ import googleLogo from "@/public/images/google.svg"
 import Preloader from "./Preloader";
 
 function LoginPage({ callingComponent }) {
-  const { auth, currentUser, isFailedAttempt, handleRedirectResult, checkAuthorization, redirect, isAuthChecking, setIsAuthChecking, isLoggedIn } = UserAuth();
-  const [hasAttemptedSignIn, setHasAttemptedSignIn] = useState(true);
-
+  const { currentUser, isFailedAttempt, handleRedirectResult, checkAuthorization, redirect, isAuthChecking, isLogged } = UserAuth();
+  
   useEffect(() => {
     if(currentUser) {
       checkAuthorization(currentUser, callingComponent);
     } else {
       handleRedirectResult(callingComponent);
     }
-  }, [redirect]);
-
-  // useEffect(() => {
-  //   if(currentUser) {
-  //     checkAuthorization(currentUser, callingComponent); localStorage.setItem("hasAttemptedSignIn", "false"); 
-  //   } else {
-  //     handleRedirectResult(callingComponent);
-  //   }
-  //   if (hasAttemptedSignIn && isAuthChecking) {
-  //     setHasAttemptedSignIn(localStorage.getItem("hasAttemptedSignIn") === "true");
-  //     console.log(`${localStorage.getItem("hasAttemptedSignIn") === "true"} +[1]+ ${hasAttemptedSignIn}`);
-  //   }
-  // }, [redirect, isAuthChecking, hasAttemptedSignIn, callingComponent, checkAuthorization, currentUser, handleRedirectResult]);
-  
-
-  // useEffect(() => {
-  //   console.log(`${localStorage.getItem("hasAttemptedSignIn") === "true"} +[]+ ${hasAttemptedSignIn}`);
-  // }, [hasAttemptedSignIn]);
+  }, [redirect, currentUser, callingComponent]);
   
 
   const handleSignIn = async () => {
     try {
-      localStorage.setItem("hasAttemptedSignIn", "true"); 
       await redirect();
     } catch (error) {
       console.error("Error occurred during sign-in: ", error);
     }
   };
-  
-  // if (hasAttemptedSignIn && isAuthChecking) {
-  //   console.log(`${hasAttemptedSignIn} +&&+ ${isAuthChecking}`);
-  //   return (
-  //     <div className="flex justify-center items-center min-h-screen">
-  //       <Preloader />
-  //     </div>
-  //   );
-  // } else if (isAuthChecking) {
-  //   setHasAttemptedSignIn(false);
-  //   return (
-  //     <div className="flex justify-center items-center min-h-screen">
-  //       <Preloader />
-  //     </div>
-  //   );
-  // } else {
-  //   console.log(`${hasAttemptedSignIn} +else+ ${isAuthChecking}`);
-  // }
+
+  if (isAuthChecking || (!isLogged && !isAuthChecking && currentUser)) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Preloader />
+      </div>
+    );
+  } 
 
   return (
   <div className="flex flex-col md:flex-row h-screen overflow-auto">
