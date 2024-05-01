@@ -94,6 +94,7 @@ const BindingDetails = ({ binding, onClose }) => {
               loading="lazy"
               src={attachIcon}
               className="shrink-0 h-6 w-6 aspect-square"
+              alt="File Attach Icon"
             />
             <div className="flex flex-col flex-1">
               <div className="text-neutral-800">File Name.docx</div>
@@ -105,6 +106,7 @@ const BindingDetails = ({ binding, onClose }) => {
               loading="lazy"
               src={attachIcon}
               className="shrink-0 h-6 w-6 aspect-square"
+              alt="File Attach Icon"
             />
             <div className="flex flex-col flex-1">
               <div className="text-neutral-800">File Name.pdf</div>
