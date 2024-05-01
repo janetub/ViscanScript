@@ -69,7 +69,7 @@ export const AuthContextProvider = ({ children }) => {
       exists = user.email.endsWith('@vsu.edu.ph');
     }
     if (!exists) {
-      console.log(`User does not exist in the '${page}' authorized users collection(s).`);
+      // console.log(`User does not exist in the '${page}' authorized users collection(s).`);
       setIsFailedAttempt(true);
       logOut();
     } else {

@@ -48,7 +48,7 @@ const   CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Form Data", formData);
+    // console.log("Form Data", formData);
 
     try {
       const transaction = await createTransaction({
@@ -57,7 +57,7 @@ const   CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
       });
 
       refetch();
-      console.log("Created Transactio", transaction);
+      // console.log("Created Transactio", transaction);
     } catch (error) {
       console.error("Error creating transaction", error);
     }
