@@ -35,11 +35,11 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithRedirect(auth, provider);
-      console.log("Admin sign-in result: ", result);
+      // console.log("Admin sign-in result: ", result);
       const exists = await checkIfUserExists(result.user.email, "administrators");
-      console.log("Document data:", result.user.email);
+      // console.log("Document data:", result.user.email);
       if (!exists) {
-        console.log("User does not exist in the 'administrators' collection.");
+        // console.log("User does not exist in the 'administrators' collection.");
         signOut(auth);
         setFailedAttempt(true);
         return { exist: false, user: result.user };
@@ -59,12 +59,12 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithRedirect(auth, provider);
-      console.log("Staff sign-in result: ", result);
+      // console.log("Staff sign-in result: ", result);
       const exists = await checkIfUserExists(result.user.email, "manuscriptCheckingLibraryStaff");
-      console.log("Document data:", result.user.email);
+      // console.log("Document data:", result.user.email);
       // printUserEntries("manuscriptCheckingLibraryStaff");
       if (!exists) {
-        console.log("User does not exist in the 'manuscriptCheckingLibraryStaff' collection.");
+        // console.log("User does not exist in the 'manuscriptCheckingLibraryStaff' collection.");
         signOut(auth);
         setFailedAttempt(true);
         return { exist: false, user: result.user };
@@ -84,15 +84,15 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithRedirect(auth, provider);
-      console.log("Student sign-in result: ", result);
+      // console.log("Student sign-in result: ", result);
 
       // Check if user's email ends with @vsu.edu.ph
       const email = result.user.email;
       const isVSUEmail = email.endsWith('@vsu.edu.ph');
-      console.log("Email:", email);
+      // console.log("Email:", email);
 
       if (!isVSUEmail) {
-        console.log("User's email does not end with @vsu.edu.ph.");
+        // console.log("User's email does not end with @vsu.edu.ph.");
         signOut(auth);
         setFailedAttempt(true);
         return { exist: false, user: result.user };

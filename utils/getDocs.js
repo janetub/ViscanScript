@@ -29,7 +29,7 @@ const fetchCollectionData = async (collectionName) => {
 
             return dataList;
         } else {
-            console.log(`No documents found in collection: ${collectionName}`);
+            // console.log(`No documents found in collection: ${collectionName}`);
             return [];
         }
     } catch (error) {

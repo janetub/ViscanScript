@@ -21,8 +21,8 @@ const Navbar = () => {
   const handleSignIn = async () => {
     try {
       const userData = await googleSignIn(); // Using googleSignIn function from
-      console.log("Signing in...", userData);
-      console.log("User data after signing in:", userData);
+      // console.log("Signing in...", userData);
+      // console.log("User data after signing in:", userData);
       // if (!userData.exist) {
       //   console.log(
       //     "User does not exist in database. Redirecting to registration form...:",

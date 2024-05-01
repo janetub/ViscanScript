@@ -35,9 +35,9 @@ const addBindingsToFirestore = async (bindings) => {
     for (const binding of bindings) {
         try {
           await createDocument('bindings', binding, 'bindingIDTracker');
-          console.log(`Successfully added binding for ${binding.firstName} ${binding.lastName}`);
+          // console.log(`Successfully added binding for ${binding.firstName} ${binding.lastName}`);
         } catch (error) {
-          console.error(`Error adding binding for ${binding.firstName} ${binding.lastName}`, error);
+          // console.error(`Error adding binding for ${binding.firstName} ${binding.lastName}`, error);
         }
       }
 };

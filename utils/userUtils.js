@@ -16,7 +16,7 @@ export const printUserEntries = async (collectionName) => {
         const usersCollection = collection(db, collectionName);
         const querySnapshot = await getDocs(usersCollection);
         querySnapshot.forEach((doc) => {
-            console.log('Document data:', doc.data());
+            // console.log('Document data:', doc.data());
         });
     } catch (error) {
         console.error('Error printing user entries:', error);
