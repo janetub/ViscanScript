@@ -11,7 +11,7 @@ import VSULogo from "@/public/images/vsu-logo-2.png";
 import googleLogo from "@/public/images/google.svg"
 import Preloader from "./Preloader";
 
-function LoginPage({ callingComponent }) {
+export default function LoginPage({ callingComponent }) {
   const { currentUser, isFailedAttempt, handleRedirectResult, checkAuthorization, redirect, isAuthChecking, isLogged } = UserAuth();
   
   useEffect(() => {
@@ -103,5 +103,3 @@ function LoginPage({ callingComponent }) {
   </div>
   );
 }
-
-export default LoginPage;

@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { fetchCollectionData } from "@/utils/getDocs";
 import Preloader from "./Preloader";
 
-const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus }) => {
+export default function BindingTable({ toggleShowDetails, collectionName, bindingOrderStatus }) {
   const [ loading, setLoading ] = useState(true);
   const [ searchQuery, setSearchQuery ] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -206,6 +206,4 @@ const BindingTable = ({ toggleShowDetails, collectionName, bindingOrderStatus })
       </div>
     </div>
   );
-};
-
-export default BindingTable;
+}

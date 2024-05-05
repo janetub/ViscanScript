@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import logo from "@/public/images/vb.png";
 
-const UserInfoCard = ({ userInfo, onClose }) => {
+export default function UserInfoCard({ userInfo, onClose }) {
   const {
     id,
     name,
@@ -152,6 +152,4 @@ const UserInfoCard = ({ userInfo, onClose }) => {
       </div>
     </div>
   );
-};
-
-export default UserInfoCard;
+}

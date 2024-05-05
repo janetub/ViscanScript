@@ -11,7 +11,7 @@ import Image from "next/image";
 import vb from "@/public/images/vb.png";
 import attachIcon from "@/public/images/attach.png";
 
-const BindingDetails = ({ binding, onClose }) => {
+export default function BindingDetails({ binding, onClose }) {
   return (
     <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow max-md:mt-5">
@@ -125,6 +125,4 @@ const BindingDetails = ({ binding, onClose }) => {
       </div>
     </div>
   );
-};
-
-export default BindingDetails;
+}

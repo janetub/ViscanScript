@@ -21,7 +21,7 @@ const s = {
   amount: 600,
 };
 
-const   CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
+export default function CreateBindingModal({ isOpen, onClose = null, refetch = null }) {
 
   const [formData, setFormData] = useState({
     name: "",
@@ -264,6 +264,4 @@ const   CreateBindingModal = ({ isOpen, onClose = null, refetch = null }) => {
       </form>
     </div>
   );
-};
-
-export default CreateBindingModal;
+}

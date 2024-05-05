@@ -17,6 +17,7 @@ import Image from "next/image";
 import LoginPage from "@/components/SignInForm";
 import { addBindingsToFirestore } from "@/utils/addBindings";
 import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png";
+import UserInfoCard from "@/components/UserInfoCard";
 
 
 /**
@@ -154,6 +155,10 @@ export default function DashboardPage() {
                         binding={selectedBinding}
                         onClose={handleClose}
                       />
+                      // <UserInfoCard 
+                      //   userInfo={selectedBinding}
+                      //   onClose={handleClose}
+                      // />
                     )}
                   </div>
                 </div>

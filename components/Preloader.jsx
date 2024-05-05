@@ -21,7 +21,7 @@ import bookFlipPreloaderGrey from "@/public/images/preloaders/book-flip-preloade
  *   <Preloader color="" />
  * )
  */
-const Preloader = ({ color }) => {
+export default function Preloader({ color }) {
   return (
     <div className="flex flex-col justify-center text-sm font-medium rounded-xl text-neutral-400 max-md:max-w-full">
       <div className="inset-0 items-center z-50">
@@ -29,6 +29,4 @@ const Preloader = ({ color }) => {
       </div>
     </div>
   );
-};
-
-export default Preloader;
+}
