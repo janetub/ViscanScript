@@ -18,7 +18,11 @@ export default function AdminPage() {
   }
 
   const handleLogout = () => {
-    logOut();
+    try {
+      logOut();
+    } catch (error) {
+      console.error("Error logging out: ", error);
+    }
   };
 
   return(

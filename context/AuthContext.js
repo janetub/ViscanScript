@@ -23,7 +23,7 @@ const AuthContext = createContext();
  * It provides functions for signing in with Google, logging out, and access to the authentication state.
  * @param {Object} children - React components to be wrapped by the AuthContextProvider
  */
-export const AuthContextProvider = ({ children }) => {
+export function AuthContextProvider({ children }) {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
@@ -31,11 +31,15 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setIsAuthChecking(false);
-    });
-    return () => unsubscribe();
+    try {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setCurrentUser(user);
+        setIsAuthChecking(false);
+      });
+      return () => unsubscribe();
+    } catch (error) {
+      console.error("Error in useEffect: ", error);
+    }
   }, [auth]);
   
   const redirect = async () => {
@@ -61,12 +65,16 @@ export const AuthContextProvider = ({ children }) => {
   const checkAuthorization = async (user, page) => {
     setIsAuthChecking(true);
     let exists = false;
-    if (page === "admin") {
-      exists = await checkIfUserExists(user.email, "administrators");
-    } else if (page === "dashboard") {
-      exists = await checkIfUserExists(user.email, "manuscriptCheckingLibraryStaff");
-    } else if (page === "form") {
-      exists = user.email.endsWith('@vsu.edu.ph');
+    try {
+      if (page === "admin") {
+        exists = await checkIfUserExists(user.email, "administrators");
+      } else if (page === "dashboard") {
+        exists = await checkIfUserExists(user.email, "manuscriptCheckingLibraryStaff");
+      } else if (page === "form") {
+        exists = user.email.endsWith('@vsu.edu.ph');
+      }
+    } catch (error) {
+      console.error(`Error occurred during ${page} authorization check:`, error);
     }
     if (!exists) {
       // console.log(`User does not exist in the '${page}' authorized users collection(s).`);
@@ -99,6 +107,6 @@ export const AuthContextProvider = ({ children }) => {
  * Custom hook to access authentication state and functions.
  * @returns {Object} - Object containing authentication state and functions
  */
-export const UserAuth = () => {
+export function UserAuth() {
   return useContext(AuthContext);
 };

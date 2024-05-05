@@ -16,7 +16,7 @@ import saveNewDocumentWithNumericId from "./setNumericID";
  * @param {*} collectionName - Firebase collection where docs are retrieved from
  * @returns {dataList} documents, empty if collection does not exist or empty
  */
-const fetchCollectionData = async (collectionName) => {
+async function fetchCollectionData(collectionName) {
     try {
         const collectionRef = collection(db, collectionName);
         const dataSnapshot = await getDocs(collectionRef);
@@ -45,7 +45,7 @@ const fetchCollectionData = async (collectionName) => {
  * @param {string} idTrackerCollectionName - Collection that keeps the numeric IDs and basis for new generated ID.
  * @returns {Firestore document} A reference to the new document in target collection.
  */
-const createDocument = async (collectionName, newDocumentData, idTrackerCollectionName) => {
+async function createDocument(collectionName, newDocumentData, idTrackerCollectionName) {
     return saveNewDocumentWithNumericId(collectionName, newDocumentData, idTrackerCollectionName);
 };
 

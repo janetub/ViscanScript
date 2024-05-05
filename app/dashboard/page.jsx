@@ -36,22 +36,38 @@ export default function DashboardPage() {
   }
 
   const handleLogout = () => {
-    logOut(); 
+    try {
+      logOut(); 
+    } catch (error) {
+      console.error("Error loggging out: ", error);
+    }
   };
 
   // Open binding details modal
   const handleOpen = (binding) => {
-    setShowDetails(true);
-    setSelectedBinding(binding);
+    try {
+      setShowDetails(true);
+      setSelectedBinding(binding);
+    } catch (error) {
+      console.error("Error opening binding details: ", error);
+    }
   };
 
   // Close binding details modal
   const handleClose = () => {
-    setShowDetails(false);
+    try {
+      setShowDetails(false);
+    } catch (error) {
+      console.error("Error closing details: ", error);
+    }
   };
 
   const handleTabSelect = (tab) => {
-    setSelectedTab(tab);
+    try {
+      setSelectedTab(tab);
+    } catch (error) {
+      console.error("Error handling tab selection: ", error);
+    }
   };
 
   return(

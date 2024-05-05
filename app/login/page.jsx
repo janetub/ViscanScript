@@ -34,7 +34,6 @@ export default function LoginPage(callingComponent) {
       }
   
       if (exist) {
-        localStorage.setItem('user', JSON.stringify(signedInUser)); 
         setUser(user);
         router.push(router);
       }

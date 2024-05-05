@@ -11,7 +11,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
  * @param {string} collectionName - The name of the Firestore collection to print user entries from.
  * @returns {void}
  */
-export const printUserEntries = async (collectionName) => {
+async function printUserEntries(collectionName) {
     try {
         const usersCollection = collection(db, collectionName);
         const querySnapshot = await getDocs(usersCollection);
@@ -29,7 +29,7 @@ export const printUserEntries = async (collectionName) => {
  * @param {string} collectionName - The name of the Firestore collection to search for the user.
  * @returns {Promise<boolean>} - A Promise that resolves to true if the user exists, false otherwise.
  */
-export const checkIfUserExists = async (email, collectionName) => {
+async function checkIfUserExists(email, collectionName) {
     try {
         const usersCollection = collection(db, collectionName);
         const usersQuery = query(usersCollection, where('email', '==', email));
@@ -47,7 +47,7 @@ export const checkIfUserExists = async (email, collectionName) => {
  * @param {string[]} collectionNames - An array of collection names to search for the user.
  * @returns {Promise<boolean>} - A Promise that resolves to true if the user exists in any collection, false otherwise.
  */
-export const checkIfEmailExistsInCollections = async (email, collectionNames) => {
+async function checkIfEmailExistsInCollections(email, collectionNames) {
     try {
         for (const collectionName of collectionNames) {
             const exists = await checkIfUserExists(email, collectionName);
@@ -59,3 +59,5 @@ export const checkIfEmailExistsInCollections = async (email, collectionNames) =>
         return false;
     }
 };
+
+export { printUserEntries, checkIfUserExists, checkIfEmailExistsInCollections };

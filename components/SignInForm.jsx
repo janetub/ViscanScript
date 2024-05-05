@@ -15,12 +15,16 @@ export default function LoginPage({ callingComponent }) {
   const { currentUser, isFailedAttempt, handleRedirectResult, checkAuthorization, redirect, isAuthChecking, isLogged } = UserAuth();
   
   useEffect(() => {
-    if(currentUser) {
-      checkAuthorization(currentUser, callingComponent);
-    } else {
-      handleRedirectResult(callingComponent);
+    try {
+      if(currentUser) {
+        checkAuthorization(currentUser, callingComponent);
+      } else {
+        handleRedirectResult(callingComponent);
+      }
+    } catch (error) {
+      console.error("Error in useEffect: ", error);
     }
-  }, [redirect, currentUser, callingComponent]);
+  }, [redirect, currentUser, callingComponent, handleRedirectResult, checkAuthorization]);
   
 
   const handleSignIn = async () => {

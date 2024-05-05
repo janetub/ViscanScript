@@ -21,11 +21,11 @@ import { db } from './firebaseConfig';
  * @param {string} idTrackerCollectionName - Collection that keeps the numeric IDs and basis for new generated ID.
  * @returns {Firestore document} A reference to the new document in target collection.
  */
-const saveNewDocumentWithNumericId = async (
+async function saveNewDocumentWithNumericId(
   collectionName,
   newDocumentData,
   idTrackerCollectionName = "idTrackers",
-) => {
+) {
   const idTrackerRef = doc(db, idTrackerCollectionName, collectionName);
   const newDocRef = doc(collection(db, collectionName));
 
@@ -50,6 +50,6 @@ const saveNewDocumentWithNumericId = async (
     console.error(`Transaction failed in collection ${collectionName}: `, error);
     throw new Error(`Failed to save new document with numeric ID in collection ${collectionName}.`);
   }
-};
+}
 
 export default saveNewDocumentWithNumericId;

@@ -11,6 +11,23 @@ import Image from "next/image";
 import vb from "@/public/images/vb.png";
 import attachIcon from "@/public/images/attach.png";
 
+BindingDetails.defaultProps = {
+  binding: {
+    priorityNum: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    studentNumber: '',
+    courseCode: '',
+    email: '',
+    title: '',
+    status: '',
+    ackID: '',
+    bindID: '',
+    id: '',
+  },
+};
+
 export default function BindingDetails({ binding, onClose }) {
   return (
     <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">

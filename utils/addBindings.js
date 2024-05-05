@@ -31,7 +31,7 @@ import { createDocument } from './getDocs';
  * @returns {Promise} A Promise that resolves when all bindings have been added to Firestore.
  * If there's an error while adding a binding, it logs the error and the name of the person for whom the binding was being added.
  */
-const addBindingsToFirestore = async (bindings) => { 
+async function addBindingsToFirestore(bindings) { 
     for (const binding of bindings) {
         try {
           await createDocument('bindings', binding, 'bindingIDTracker');

@@ -36,7 +36,7 @@ body {
   }
 } */
 
-:root {
+/* :root {
   --header-height: 48px;
   --page-padding-default: 32px;
   --page-max-width: 1200px;
@@ -236,4 +236,4 @@ body {
   --scrollbar-color: rgba(0, 0, 0, .1);
   --scrollbar-color-active: rgba(0, 0, 0, .3);
   --icon-grayscale-image-filter: grayscale(100%) brightness(0%)
-}
+} */
