@@ -23,7 +23,7 @@ import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png";
  * DashboardPage component represents the admin dashboard page.
  * It displays binding requests and provides functionality for managing user interactions.
  */
-function DashboardPage() {
+export default function DashboardPage() {
   const { isLoggedIn, logOut } = UserAuth();
   const [showDetails, setShowDetails] = useState(false);
   const [selectedBinding, setSelectedBinding] = useState({});
@@ -51,12 +51,6 @@ function DashboardPage() {
 
   const handleTabSelect = (tab) => {
     setSelectedTab(tab);
-  };
-
-  const handleLogout = () => {
-    logOut();
-    localStorage.removeItem('user'); 
-    window.location.reload();  
   };
 
   return(
@@ -171,5 +165,3 @@ function DashboardPage() {
     </div>
   );  
 }
-
-export default DashboardPage;

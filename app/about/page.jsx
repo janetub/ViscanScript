@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HomePage = () => {
+export default function HomePage() {
   return (
     <div className="flex flex-col px-6 py-5 bg-white">
       <div className="flex justify-center items-center h-screen">
@@ -10,5 +10,3 @@ const HomePage = () => {
     </div>
   );
 }
-
-export default HomePage

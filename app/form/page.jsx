@@ -10,7 +10,7 @@ import CreateBindingModal from "@/components/BindingRequestForm";
 import { UserAuth } from "@/context/AuthContext";
 import LoginPage from "../../components/SignInForm";
 
-const CreateBindingePage = () => {
+export default function CreateBindingePage() {
   const { isLoggedIn, logOut } = UserAuth();
 
   if (!isLoggedIn) {
@@ -40,6 +40,4 @@ const CreateBindingePage = () => {
       </div>
     </div>
   );
-};
-
-export default CreateBindingePage;
+}

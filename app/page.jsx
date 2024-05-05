@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes';
 
 
 
-const HomePage = () => {
+export default function HomePage() {
   return (
     <ThemeProvider attribute='class'>
       <div className="flex flex-col px-6 py-5 bg-white">
@@ -17,9 +17,7 @@ const HomePage = () => {
       </div>
     </ThemeProvider>
   );
-};
-
-export default HomePage;
+}
 
 
 // export default function Home() {

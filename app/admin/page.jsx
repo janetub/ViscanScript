@@ -8,10 +8,9 @@
 
 import LoginPage from "@/components/SignInForm";
 import { UserAuth } from "@/context/AuthContext";
-import React, { useContext } from 'react'
 
 
-const AdminPage = () => {
+export default function AdminPage() {
   const { isLoggedIn, logOut } = UserAuth();
 
   if (!isLoggedIn) {
@@ -41,6 +40,4 @@ const AdminPage = () => {
       </div>
     </div>
   );
-};
-
-export default AdminPage
+}
