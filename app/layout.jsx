@@ -1,17 +1,11 @@
 import "../styles/globals.css";
 import { Inter } from "next/font/google";
 import { AuthContextProvider } from "../context/AuthContext";
-import favicon from "@/public/images/vb.png";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Viscan Script",
   description: "",
-  // icons:{
-  //   icon: {favicon},
-  //   apple: {favicon},
-  //   shortcut: {favicon},
-  // }
 };
 
 export default function RootLayout({ children }) {
