@@ -7,11 +7,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Viscan Script",
   description: "",
-  icons:{
-    icon: {favicon},
-    apple: {favicon},
-    shortcut: {favicon},
-  }
+  // icons:{
+  //   icon: {favicon},
+  //   apple: {favicon},
+  //   shortcut: {favicon},
+  // }
 };
 
 export default function RootLayout({ children }) {
