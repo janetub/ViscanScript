@@ -1,10 +1,7 @@
 import { db } from "../utils/firebaseConfig";
 import { collection, doc, runTransaction } from "firebase/firestore";
 
-async function saveNewDocumentWithNumericId(
-  collectionName,
-  newDocumentData,
-) {
+async function saveNewDocumentWithNumericId(collectionName, newDocumentData) {
   const idTrackerRef = doc(db, "idTrackers", collectionName);
   const newDocRef = doc(collection(db, collectionName));
 
@@ -12,10 +9,10 @@ async function saveNewDocumentWithNumericId(
     await runTransaction(db, async (transaction) => {
       // Get the current numeric ID from the tracker
       const idTrackerDoc = await transaction.get(idTrackerRef);
-      let newId = 1;  // Default value
+      let newId = 1; // Default value
 
       if (idTrackerDoc.exists) {
-        newId = (idTrackerDoc.data().lastId || 0) + 1;
+        newId = (idTrackerDoc.data()?.lastId || 0) + 1;
       }
 
       // Set the new ID in the tracker
@@ -33,6 +30,6 @@ async function saveNewDocumentWithNumericId(
     console.error("Transaction failed: ", error);
     throw new Error("Failed to save new document with numeric ID.");
   }
-};
+}
 
 export default saveNewDocumentWithNumericId;
