@@ -1,19 +1,16 @@
 /**
  * app/page.jsx
- * 
+ *
  * entry point
  */
 
-import React from 'react';
-import HomePage from './home/page';
+// sample commit
+import React from "react";
+import HomePage from "./home/page";
 
 export default function App() {
-  return (
-    <HomePage />
-  );
+  return <HomePage />;
 }
-
-
 
 // export default function Home() {
 //   return <div className="flex flex-col h-screen bg-black">This is home</div>;

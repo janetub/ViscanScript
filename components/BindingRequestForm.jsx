@@ -1,10 +1,11 @@
 /**
  * components/BindingRequestForm.jsx
- * 
+ *
  * Binding Request Submission Form
  */
 
 import { createTransaction } from "@/api/transactions";
+import { uploadFile } from "@/utils/file";
 import React, { useState } from "react";
 
 const s = {
@@ -21,8 +22,11 @@ const s = {
   amount: 600,
 };
 
-export default function CreateBindingModal({ isOpen, onClose = null, refetch = null }) {
-
+export default function CreateBindingModal({
+  isOpen,
+  onClose = null,
+  refetch = null,
+}) {
   const [formData, setFormData] = useState({
     name: "",
     studentNumber: "",
@@ -36,10 +40,16 @@ export default function CreateBindingModal({ isOpen, onClose = null, refetch = n
     appointmentDate: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, files } = e.target;
+
     if (files) {
-      setFormData({ ...formData, [name]: files[0].name });
+      try {
+        const url = await uploadFile(files[0]);
+        setFormData({ ...formData, [name]: url });
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
