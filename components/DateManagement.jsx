@@ -5,9 +5,11 @@ import {
 import { isWeekend } from "date-fns";
 import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
+import Swal from "sweetalert2";
 
 export default function DateManagement() {
   const [selectedDates, setSelectedDates] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +28,16 @@ export default function DateManagement() {
   };
 
   const handleSaveDates = async () => {
+    setIsSaving(true);
     await updateOperationDate(selectedDates);
+    setIsSaving(false);
+
+    Swal.fire({
+      icon: "success",
+      title: "Operation Dates Updated",
+
+      showConfirmButton: true,
+    });
   };
 
   return (
@@ -51,8 +62,9 @@ export default function DateManagement() {
             <button
               className="grow justify-center px-5 py-3 bg-sky-500 rounded text-white"
               onClick={handleSaveDates}
+              disabled={isSaving}
             >
-              Save Dates
+              {isSaving ? "Saving..." : "Save Dates"}
             </button>
           </div>
         </div>

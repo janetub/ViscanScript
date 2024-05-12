@@ -19,7 +19,7 @@ import { addBindingsToFirestore } from "@/utils/addBindings";
 import vsuScript from "@/public/images/vsuscript/vsuscript-logo-black.png";
 import UserInfoCard from "@/components/UserInfoCard";
 import BindingManagement from "@/components/BindingManagement";
-import { MainNav } from "@/contants/MainNav";
+import { MainNav } from "@/contants/mainNav";
 import DateManagement from "@/components/DateManagement";
 /**
  * DashboardPage component represents the admin dashboard page.
@@ -147,13 +147,19 @@ export default function DashboardPage() {
                 </div>
                 <div className="shrink-0 mt-4 h-px bg-sky-100 border border-sky-100 border-solid" />
                 <div
-                  className="mt-8 font-medium leading-[143%] text-neutral-800"
+                  className={`mt-8 font-medium leading-[143%] text-neutral-800 ${
+                    selectedMainNav === MainNav.OPERATION_DATE &&
+                    "bg-sky-100 rounded-xl rounded-xl p-2"
+                  }`}
                   onClick={() => handleSelectMainNav(MainNav.OPERATION_DATE)}
                 >
                   Manage Operation Date
                 </div>
                 <div
-                  className="mt-8 font-medium leading-[143%] text-neutral-800"
+                  className={`mt-8 font-medium leading-[143%] text-neutral-800 ${
+                    selectedMainNav === MainNav.BINDING_MANAGEMENT &&
+                    "bg-sky-100 rounded-xl rounded-xl p-2"
+                  }`}
                   onClick={() =>
                     handleSelectMainNav(MainNav.BINDING_MANAGEMENT)
                   }

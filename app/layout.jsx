@@ -4,6 +4,7 @@ import { AuthContextProvider } from "../context/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 import "react-datepicker/dist/react-datepicker.css";
+// import "sweetalert2/src/sweetalert2.scss";
 
 export const metadata = {
   title: "Viscan Script",
