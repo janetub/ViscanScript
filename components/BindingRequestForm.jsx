@@ -224,7 +224,7 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
         console.error("Error updating document: ", error);
       }
       window.confirm(`Congratulations! Your Binding Order Request has been successfully submitted. We've sent you an email at ${restOfFormData.email} with your priority number and further instructions. Please check your inbox.`);
-      // setFormData(initialFormData);
+      setFormData(initialFormData);
 
     } catch (error) {
       await deleteDocument('BindingOrders', transactionId);
