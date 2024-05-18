@@ -8,7 +8,7 @@ export default function UserInfoCard({ userInfo, onClose }) {
     name,
     studentNumber,
     email,
-    courseCode,
+    programCode,
     appointmentDate,
     title,
     copies,
@@ -58,7 +58,7 @@ export default function UserInfoCard({ userInfo, onClose }) {
           </div>
           <div className="flex justify-between items-center text-gray-700 text-base mb-2">
             <p>Course Code</p>
-            <p>{courseCode}</p>
+            <p>{programCode}</p>
           </div>
           <div className="flex justify-between items-center text-gray-700 text-base mb-2">
             <p>Appointment Date</p>
