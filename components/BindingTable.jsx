@@ -80,7 +80,7 @@ export default function BindingTable({ toggleShowDetails, collectionName, bindin
     };
   
     fetchBindings();
-  }, [collectionName, bindingOrderStatus]);
+  }, [collectionName]);
 
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);

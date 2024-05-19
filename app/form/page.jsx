@@ -6,12 +6,12 @@
 
 "use client";
 
-import CreateBindingModal from "@/components/BindingRequestForm";
+import BindingRequestForm from "@/components/BindingRequestForm";
 import { UserAuth } from "@/context/AuthContext";
 import LoginPage from "../../components/SignInForm";
 
 export default function CreateBindingePage() {
-  const { isLoggedIn, logOut } = UserAuth();
+  const { isLoggedIn, logOut, currentUser } = UserAuth();
 
   if (!isLoggedIn) {
     return <LoginPage callingComponent="form" />;
@@ -40,7 +40,7 @@ export default function CreateBindingePage() {
         </div>
       </div>
       <div className="bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex justify-center items-start">
-        <CreateBindingModal />
+        <BindingRequestForm email={currentUser.email} />
       </div>
     </div>
   );

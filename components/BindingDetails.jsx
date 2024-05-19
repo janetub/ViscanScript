@@ -18,7 +18,7 @@ BindingDetails.defaultProps = {
     middleName: '',
     lastName: '',
     studentNumber: '',
-    courseCode: '',
+    programeCode: '',
     email: '',
     title: '',
     status: '',
@@ -61,7 +61,7 @@ export default function BindingDetails({ binding, onClose }) {
               {binding.studentNumber}
             </div>
             <div className="self-center mt-2.5 text-xl font-bold text-center text-neutral-800">
-              {binding.courseCode}
+              {binding.programeCode}
             </div>
           </div>
         </div>
