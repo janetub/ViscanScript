@@ -44,7 +44,7 @@ export default function DateManagement() {
     <div className="flex flex-col ml-5 w-[83%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col px-4 py-5 w-full bg-sky-100 rounded-xl max-md:mt-5 max-md:max-w-full">
         <div className="justify-center items-start py-2 pl-4 text-base font-medium bg-white rounded-xl text-neutral-800 max-md:pr-5 max-md:max-w-full">
-          <button>Binding Requests</button>{" "}
+          <button>Manage Operation Date</button>{" "}
           {/* onClick={addBindings} For testing */}
         </div>
         <div className="flex flex-col px-5 pt-5 mt-4 bg-white rounded-xl max-md:max-w-full">

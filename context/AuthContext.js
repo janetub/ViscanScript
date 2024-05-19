@@ -41,7 +41,7 @@ export function AuthContextProvider({ children }) {
       console.error("Error in useEffect: ", error);
     }
   }, [auth]);
-  
+
   const redirect = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -52,7 +52,7 @@ export function AuthContextProvider({ children }) {
   };
 
   const handleRedirectResult = async (page) => {
-    if(currentUser && isLoggedIn) {
+    if (currentUser && isLoggedIn) {
       try {
         const result = await getRedirectResult(auth);
         await checkAuthorization(result.user, page);
@@ -61,7 +61,7 @@ export function AuthContextProvider({ children }) {
       }
     }
   };
-  
+
   const checkAuthorization = async (user, page) => {
     setIsAuthChecking(true);
     let exists = false;
@@ -69,12 +69,18 @@ export function AuthContextProvider({ children }) {
       if (page === "admin") {
         exists = await checkIfUserExists(user.email, "administrators");
       } else if (page === "dashboard") {
-        exists = await checkIfUserExists(user.email, "manuscriptCheckingLibraryStaff");
+        exists = await checkIfUserExists(
+          user.email,
+          "manuscriptCheckingLibraryStaff",
+        );
       } else if (page === "form") {
-        exists = user.email.endsWith('@vsu.edu.ph');
+        exists = user.email.endsWith("@vsu.edu.ph");
       }
     } catch (error) {
-      console.error(`Error occurred during ${page} authorization check:`, error);
+      console.error(
+        `Error occurred during ${page} authorization check:`,
+        error,
+      );
     }
     if (!exists) {
       // console.log(`User does not exist in the '${page}' authorized users collection(s).`);
@@ -97,11 +103,24 @@ export function AuthContextProvider({ children }) {
 
   // Provide the authentication state and functions to children components through context
   return (
-    <AuthContext.Provider value={{ auth, currentUser, isAuthChecking, isFailedAttempt, isLoggedIn, setIsAuthChecking, redirect, handleRedirectResult, checkAuthorization, logOut }}>
+    <AuthContext.Provider
+      value={{
+        auth,
+        currentUser,
+        isAuthChecking,
+        isFailedAttempt,
+        isLoggedIn,
+        setIsAuthChecking,
+        redirect,
+        handleRedirectResult,
+        checkAuthorization,
+        logOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  );  
-};
+  );
+}
 
 /**
  * Custom hook to access authentication state and functions.
@@ -109,4 +128,4 @@ export function AuthContextProvider({ children }) {
  */
 export function UserAuth() {
   return useContext(AuthContext);
-};
+}

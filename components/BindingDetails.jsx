@@ -1,8 +1,8 @@
 /**
  * components/BindingDetails.jsx
- * 
+ *
  * The side panel or preview pane containing detauls of the active or selected Binding Order Request
- * 
+ *
  * attributions
  * <a href="https://www.flaticon.com/free-icons/attach" title="attach icons">Attach icons created by Freepik - Flaticon</a>
  */
@@ -13,22 +13,23 @@ import attachIcon from "@/public/images/attach.png";
 
 BindingDetails.defaultProps = {
   binding: {
-    priorityNum: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    studentNumber: '',
-    programeCode: '',
-    email: '',
-    title: '',
-    status: '',
-    ackID: '',
-    bindID: '',
-    id: '',
+    priorityNum: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    studentNumber: "",
+    programeCode: "",
+    email: "",
+    title: "",
+    status: "",
+    ackID: "",
+    bindID: "",
+    id: "",
   },
 };
 
 export default function BindingDetails({ binding, onClose }) {
+  console.log({ binding });
   return (
     <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow max-md:mt-5">
@@ -50,13 +51,20 @@ export default function BindingDetails({ binding, onClose }) {
             <div className="flex justify-center items-center px-2.5 mt-3 border border-solid border-[color:var(--Blue-600,#1E88E5)] h-[155px] rounded-[100px] w-[155px]">
               <div className="flex overflow-hidden relative flex-col px-px w-full aspect-square">
                 <div className="relative shrink-0 bg-blue-300 rounded-full h-full w-full" />
+                <img
+                  loading="lazy"
+                  src={binding.idPhoto}
+                  className="object-cover absolute inset-0 size-full border rounded-full"
+                />
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">
-          <div className="self-center mt-3 text-xl font-bold text-center whitespace text-neutral-800">
-            {`${binding.firstName} ${binding.middleName ? binding.middleName + ' ' : ''}${binding.lastName}`}
-          </div>
+            <div className="self-center mt-3 text-xl font-bold text-center whitespace text-neutral-800">
+              {`${binding.firstName} ${
+                binding.middleName ? binding.middleName + " " : ""
+              }${binding.lastName}`}
+            </div>
             <div className="self-center mt-2.5 text-sm font-semibold text-center text-neutral-500">
               {binding.studentNumber}
             </div>
@@ -91,11 +99,11 @@ export default function BindingDetails({ binding, onClose }) {
             />
           </div>
           <div className="mt-7 font-semibold text-neutral-500">
-            Acknowledgement ID: {binding.ackID || 'N/A'}
+            Acknowledgement ID: {binding.ackID || "N/A"}
             <br />
-            Order ID: {binding.bindID || 'N/A'}
+            Order ID: {binding.bindID || "N/A"}
             <br />
-            OR ID: {binding.id || 'N/A'}
+            OR ID: {binding.id || "N/A"}
           </div>
           <div className="flex gap-0 justify-between mt-7 whitespace-nowrap text-neutral-800">
             <div className="grow">Attachment</div>
@@ -113,10 +121,14 @@ export default function BindingDetails({ binding, onClose }) {
               className="shrink-0 h-6 w-6 aspect-square"
               alt="File Attach Icon"
             />
-            <div className="flex flex-col flex-1">
+            <a
+              href={binding.docxFile}
+              target="_blank"
+              className="flex flex-col flex-1"
+            >
               <div className="text-neutral-800">File Name.docx</div>
               <div className="text-neutral-400">4/16/2021 07:47:03 </div>
-            </div>
+            </a>
           </div>
           <div className="flex gap-3 justify-between mt-3 text-xs leading-5 whitespace-nowrap">
             <Image
@@ -125,10 +137,14 @@ export default function BindingDetails({ binding, onClose }) {
               className="shrink-0 h-6 w-6 aspect-square"
               alt="File Attach Icon"
             />
-            <div className="flex flex-col flex-1">
+            <a
+              href={binding.pdfFile}
+              target="_blank"
+              className="flex flex-col flex-1"
+            >
               <div className="text-neutral-800">File Name.pdf</div>
               <div className="text-neutral-400">3/20/2021 12:47:03 </div>
-            </div>
+            </a>
           </div>
           <div className="flex gap-3 justify-between pr-2 mt-14 mb-1 text-center text-white whitespace-nowrap max-md:mt-10">
             <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
