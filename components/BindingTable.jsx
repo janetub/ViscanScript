@@ -152,7 +152,7 @@ export default function BindingTable({
               {showSortOptions && (
                 <div className="absolute z-10 bg-white shadow-md rounded-md mt-2 text-center">
                   <button
-                    className={`block w-full py-2 px-3 text-sm w-full font-medium ${
+                    className={`block w-full py-2 px-3 text-md w-full font-large ${
                       sortOrder === "newest"
                         ? "text-neutral-500"
                         : "hover:bg-gray-200"
@@ -163,7 +163,7 @@ export default function BindingTable({
                     Newest
                   </button>
                   <button
-                    className={`block w-full py-2 px-3 hover:bg-gray-200 text-sm font-medium ${
+                    className={`block w-full py-2 px-3 hover:bg-gray-200 text-md font-large ${
                       sortOrder === "oldest"
                         ? "text-neutral-500"
                         : "hover:bg-gray-200"
@@ -176,24 +176,18 @@ export default function BindingTable({
                 </div>
               )}
             </div>
-            <div className="flex gap-0 my-auto">
+            <div className="flex gap-2 my-auto">
               <button
                 className="w-4 aspect-square"
                 onClick={() => handlePageNavigation("prev")}
               >
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/edd76317491ea58712227e5ceb21e73e7852d21087c939fe54af37538446112f?"
-                />
+                {"<"}
               </button>
               <button
                 className="w-4 aspect-square"
                 onClick={() => handlePageNavigation("next")}
               >
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/894c1823729502fc9761c47568f3db9c7d13a97df6caab81855d21980cbce0b4?"
-                />
+                {">"}
               </button>
             </div>
           </div>

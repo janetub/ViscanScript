@@ -8,8 +8,10 @@
  */
 
 import Image from "next/image";
-import vb from "@/public/images/vb.png";
 import attachIcon from "@/public/images/attach.png";
+import { bindingStatuses, getNextStatus } from "./BindingOrderTabs";
+import Swal from "sweetalert2";
+import { updateBindingStatus } from "@/utils/updateBindings";
 
 BindingDetails.defaultProps = {
   binding: {
@@ -29,7 +31,26 @@ BindingDetails.defaultProps = {
 };
 
 export default function BindingDetails({ binding, onClose }) {
-  console.log({ binding });
+  const handleProceedNextStatus = async (status) => {
+    const nextStatus = getNextStatus(status);
+
+    if (nextStatus) {
+      try {
+        await updateBindingStatus(binding.id, nextStatus.status);
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `Binding status updated to ${nextStatus.status}`,
+        });
+
+        onClose();
+      } catch (error) {
+        console.error(`Error updating status for binding ${binding.id}`, error);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow max-md:mt-5">
@@ -92,11 +113,6 @@ export default function BindingDetails({ binding, onClose }) {
             <div className="justify-center px-2 py-1 bg-yellow-50 rounded-[100px]">
               {binding.status}
             </div>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/8591c6bdcf420031e58cdd4b9f64e09b096dc8d071e22318c17050ec3e9751e1?"
-              className="my-auto w-4 aspect-square"
-            />
           </div>
           <div className="mt-7 font-semibold text-neutral-500">
             Acknowledgement ID: {binding.ackID || "N/A"}
@@ -147,12 +163,20 @@ export default function BindingDetails({ binding, onClose }) {
             </a>
           </div>
           <div className="flex gap-3 justify-between pr-2 mt-14 mb-1 text-center text-white whitespace-nowrap max-md:mt-10">
-            <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
+            <div className="mt-7">
+              <button
+                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                onClick={() => handleProceedNextStatus(binding.status)}
+              >
+                Proceed to Next Status
+              </button>
+            </div>
+            {/* <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
               Complete Order
             </div>
             <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
               Complete Order
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

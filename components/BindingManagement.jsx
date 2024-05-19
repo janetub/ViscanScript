@@ -1,6 +1,7 @@
 import React from "react";
 import BindingDetails from "./BindingDetails";
 import BindingTable from "./BindingTable";
+import { getNextStatus } from "./BindingOrderTabs";
 
 function BindingManagement({
   selectedTab,
@@ -8,7 +9,16 @@ function BindingManagement({
   handleOpen,
   handleClose,
   selectedBinding,
+  setSelectedTab,
 }) {
+  const onclose = () => {
+    const nextStatus = getNextStatus(selectedBinding.status);
+
+    console.log("nextStatus", nextStatus);
+    setSelectedTab(nextStatus.status);
+    handleClose();
+  };
+
   return (
     <div className="flex flex-col ml-5 w-[83%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col px-4 py-5 w-full bg-sky-100 rounded-xl max-md:mt-5 max-md:max-w-full">
@@ -25,14 +35,7 @@ function BindingManagement({
                 bindingOrderStatus={selectedTab !== "all" ? selectedTab : null}
               />
               {showDetails && (
-                <BindingDetails
-                  binding={selectedBinding}
-                  onClose={handleClose}
-                />
-                // <UserInfoCard
-                //   userInfo={selectedBinding}
-                //   onClose={handleClose}
-                // />
+                <BindingDetails binding={selectedBinding} onClose={onclose} />
               )}
             </div>
           </div>

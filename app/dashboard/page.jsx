@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedBinding, setSelectedBinding] = useState({});
   const [bindings, setBindings] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("all");
+  const [selectedTab, setSelectedTab] = useState("All");
   const [selectedMainNav, setSelectedMainNav] = useState(
     MainNav.BINDING_MANAGEMENT,
   );
@@ -184,6 +184,7 @@ export default function DashboardPage() {
               handleOpen={handleOpen}
               selectedTab={selectedTab}
               selectedBinding={selectedBinding}
+              setSelectedTab={setSelectedTab}
               handleClose={handleClose}
               showDetails={showDetails}
             />
