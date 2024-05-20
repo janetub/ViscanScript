@@ -214,11 +214,11 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
       } catch (error) {
         console.error("Error writing document: ", error);
       }
-      const priorityNumber = await assignPriorityNum(db, formData.appointmentDate);
+      const priorityNum = await assignPriorityNum(db, formData.appointmentDate);
       try {
         console.log("Priority adding...");
         const docRef = doc(db, "bindings", transactionId);
-        await updateDoc(docRef, {priorityNumber});
+        await updateDoc(docRef, {priorityNum});
         console.log("Priority added!");
       } catch (error) {
         console.error("Error updating document: ", error);
