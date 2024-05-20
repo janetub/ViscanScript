@@ -1,34 +1,56 @@
 /**
  * components/BindingDetails.jsx
- * 
+ *
  * The side panel or preview pane containing detauls of the active or selected Binding Order Request
- * 
+ *
  * attributions
  * <a href="https://www.flaticon.com/free-icons/attach" title="attach icons">Attach icons created by Freepik - Flaticon</a>
  */
 
 import Image from "next/image";
-import vb from "@/public/images/vb.png";
 import attachIcon from "@/public/images/attach.png";
+import { bindingStatuses, getNextStatus } from "./BindingOrderTabs";
+import Swal from "sweetalert2";
+import { updateBindingStatus } from "@/utils/updateBindings";
 
 BindingDetails.defaultProps = {
   binding: {
-    priorityNum: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    studentNumber: '',
-    programeCode: '',
-    email: '',
-    title: '',
-    status: '',
-    ackID: '',
-    bindID: '',
-    id: '',
+    priorityNum: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    studentNumber: "",
+    programeCode: "",
+    email: "",
+    title: "",
+    status: "",
+    ackID: "",
+    bindID: "",
+    id: "",
   },
 };
 
 export default function BindingDetails({ binding, onClose }) {
+  const handleProceedNextStatus = async (status) => {
+    const nextStatus = getNextStatus(status);
+
+    if (nextStatus) {
+      try {
+        await updateBindingStatus(binding.id, nextStatus.status);
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `Binding status updated to ${nextStatus.status}`,
+        });
+
+        onClose();
+      } catch (error) {
+        console.error(`Error updating status for binding ${binding.id}`, error);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow max-md:mt-5">
@@ -50,13 +72,20 @@ export default function BindingDetails({ binding, onClose }) {
             <div className="flex justify-center items-center px-2.5 mt-3 border border-solid border-[color:var(--Blue-600,#1E88E5)] h-[155px] rounded-[100px] w-[155px]">
               <div className="flex overflow-hidden relative flex-col px-px w-full aspect-square">
                 <div className="relative shrink-0 bg-blue-300 rounded-full h-full w-full" />
+                <img
+                  loading="lazy"
+                  src={binding.idPhoto}
+                  className="object-cover absolute inset-0 size-full border rounded-full"
+                />
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">
-          <div className="self-center mt-3 text-xl font-bold text-center whitespace text-neutral-800">
-            {`${binding.firstName} ${binding.middleName ? binding.middleName + ' ' : ''}${binding.lastName}`}
-          </div>
+            <div className="self-center mt-3 text-xl font-bold text-center whitespace text-neutral-800">
+              {`${binding.firstName} ${
+                binding.middleName ? binding.middleName + " " : ""
+              }${binding.lastName}`}
+            </div>
             <div className="self-center mt-2.5 text-sm font-semibold text-center text-neutral-500">
               {binding.studentNumber}
             </div>
@@ -84,18 +113,13 @@ export default function BindingDetails({ binding, onClose }) {
             <div className="justify-center px-2 py-1 bg-yellow-50 rounded-[100px]">
               {binding.status}
             </div>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/8591c6bdcf420031e58cdd4b9f64e09b096dc8d071e22318c17050ec3e9751e1?"
-              className="my-auto w-4 aspect-square"
-            />
           </div>
           <div className="mt-7 font-semibold text-neutral-500">
-            Acknowledgement ID: {binding.ackID || 'N/A'}
+            Acknowledgement ID: {binding.ackID || "N/A"}
             <br />
-            Order ID: {binding.bindID || 'N/A'}
+            Order ID: {binding.bindID || "N/A"}
             <br />
-            OR ID: {binding.id || 'N/A'}
+            OR ID: {binding.id || "N/A"}
           </div>
           <div className="flex gap-0 justify-between mt-7 whitespace-nowrap text-neutral-800">
             <div className="grow">Attachment</div>
@@ -113,10 +137,14 @@ export default function BindingDetails({ binding, onClose }) {
               className="shrink-0 h-6 w-6 aspect-square"
               alt="File Attach Icon"
             />
-            <div className="flex flex-col flex-1">
+            <a
+              href={binding.docxFile}
+              target="_blank"
+              className="flex flex-col flex-1"
+            >
               <div className="text-neutral-800">File Name.docx</div>
               <div className="text-neutral-400">4/16/2021 07:47:03 </div>
-            </div>
+            </a>
           </div>
           <div className="flex gap-3 justify-between mt-3 text-xs leading-5 whitespace-nowrap">
             <Image
@@ -125,18 +153,30 @@ export default function BindingDetails({ binding, onClose }) {
               className="shrink-0 h-6 w-6 aspect-square"
               alt="File Attach Icon"
             />
-            <div className="flex flex-col flex-1">
+            <a
+              href={binding.pdfFile}
+              target="_blank"
+              className="flex flex-col flex-1"
+            >
               <div className="text-neutral-800">File Name.pdf</div>
               <div className="text-neutral-400">3/20/2021 12:47:03 </div>
-            </div>
+            </a>
           </div>
           <div className="flex gap-3 justify-between pr-2 mt-14 mb-1 text-center text-white whitespace-nowrap max-md:mt-10">
-            <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
+            <div className="mt-7">
+              <button
+                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                onClick={() => handleProceedNextStatus(binding.status)}
+              >
+                Proceed to Next Status
+              </button>
+            </div>
+            {/* <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
               Complete Order
             </div>
             <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
               Complete Order
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

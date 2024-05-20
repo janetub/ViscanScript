@@ -1,8 +1,8 @@
 /**
  * components/BindingRequestForm.jsx
- * 
+ *
  * Binding Request Submission Form
- * 
+ *
  * TODO: retain field inputs
  * TODO: successful/failed dialog
  */
@@ -11,7 +11,7 @@ import { createDocument } from "@/utils/getDocs";
 import { finalizeUpload, startUpload } from "@/utils/storageService";
 import { generateUniqueId } from "@/utils/transactionIdTracker";
 import React, { useEffect, useState } from "react";
-import 'react-datepicker/dist/react-datepicker.css'
+import "react-datepicker/dist/react-datepicker.css";
 import ReactDatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
@@ -20,17 +20,18 @@ import { deleteDocument } from "@/utils/firestoreService";
 import { assignPriorityNum } from "@/utils/priorityNum";
 import "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
+import { fetchLatestOperationDate } from "@/api/operationDate";
 
 const initialFormData = {
-  firstName: '',
-  middleName: '',
-  lastName: '',
-  studentNumberPart1: '',
-  studentNumberPart2: '',
-  studentNumberPart3: '',
-  email: '',
-  programCode: '',
-  title: '',
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  studentNumberPart1: "",
+  studentNumberPart2: "",
+  studentNumberPart3: "",
+  email: "",
+  programCode: "",
+  title: "",
   copies: 1,
   pdfFile: null,
   docxFile: null,
@@ -39,64 +40,78 @@ const initialFormData = {
 };
 
 const programList = [
-  { title: 'Bachelor of Science in Agriculture', code: 'BSA' },
-  { title: 'Bachelor of Science in Development Communication', code: 'BSDC' },
-  { title: 'Bachelor of Science in Food Technology', code: 'BSFT' },
-  { title: 'Bachelor of Arts in English Language Studies', code: 'AB English' },
-  { title: 'Bachelor of Arts in Philosophy', code: 'AB Philosophy' },
-  { title: 'Bachelor of Science in Applied Physics', code: 'BSAP' },
-  { title: 'Bachelor of Science in Biology', code: 'BSB' },
-  { title: 'Bachelor of Science in Biotechnology', code: 'BSBT' },
-  { title: 'Bachelor of Science in Chemistry', code: 'BSC' },
-  { title: 'Bachelor of Science in Marine Biology', code: 'BSMarineBio' },
-  { title: 'Bachelor of Science in Mathematics', code: 'BSM' },
-  { title: 'Bachelor of Science in Statistics', code: 'BSStat' },
-  { title: 'Bachelor of Culture and Arts Education', code: 'BCaEd' },
-  { title: 'Bachelor of Early Childhood Education', code: 'BECEd' },
-  { title: 'Bachelor of Elementary Education', code: 'BEEd' },
-  { title: 'Bachelor of Physical Education', code: 'BPEd' },
-  { title: 'Bachelor of Secondary Education', code: 'BSEd' },
-  { title: 'Bachelor of Science in Agricultural and Biosystems Engineering', code: 'BSABE' },
-  { title: 'Bachelor of Science in Civil Engineering', code: 'BSCE' },
-  { title: 'Bachelor of Science in Computer Science', code: 'BSCS' },
-  { title: 'Bachelor of Science in Geodetic Engineering', code: 'BSGE' },
-  { title: 'Bachelor of Science in Mechanical Engineering', code: 'BSME' },
-  { title: 'Bachelor of Science in Meteorology', code: 'BSMet' },
-  { title: 'Bachelor of Science in Environmental Science', code: 'BSES' },
-  { title: 'Bachelor of Science in Forestry', code: 'BSF' },
-  { title: 'Bachelor of Science in Agribusiness', code: 'BSAB' },
-  { title: 'Bachelor of Science in Economics', code: 'BSE' },
-  { title: 'Bachelor of Science in Hospitality Management', code: 'BSHM' },
-  { title: 'Bachelor of Science in Tourism Management', code: 'BSTM' },
-  { title: 'Bachelor of Science in Nursing', code: 'BSN' },
-  { title: 'Doctor of Veterinary Medicine', code: 'DVM' },
+  { title: "Bachelor of Science in Agriculture", code: "BSA" },
+  { title: "Bachelor of Science in Development Communication", code: "BSDC" },
+  { title: "Bachelor of Science in Food Technology", code: "BSFT" },
+  { title: "Bachelor of Arts in English Language Studies", code: "AB English" },
+  { title: "Bachelor of Arts in Philosophy", code: "AB Philosophy" },
+  { title: "Bachelor of Science in Applied Physics", code: "BSAP" },
+  { title: "Bachelor of Science in Biology", code: "BSB" },
+  { title: "Bachelor of Science in Biotechnology", code: "BSBT" },
+  { title: "Bachelor of Science in Chemistry", code: "BSC" },
+  { title: "Bachelor of Science in Marine Biology", code: "BSMarineBio" },
+  { title: "Bachelor of Science in Mathematics", code: "BSM" },
+  { title: "Bachelor of Science in Statistics", code: "BSStat" },
+  { title: "Bachelor of Culture and Arts Education", code: "BCaEd" },
+  { title: "Bachelor of Early Childhood Education", code: "BECEd" },
+  { title: "Bachelor of Elementary Education", code: "BEEd" },
+  { title: "Bachelor of Physical Education", code: "BPEd" },
+  { title: "Bachelor of Secondary Education", code: "BSEd" },
+  {
+    title: "Bachelor of Science in Agricultural and Biosystems Engineering",
+    code: "BSABE",
+  },
+  { title: "Bachelor of Science in Civil Engineering", code: "BSCE" },
+  { title: "Bachelor of Science in Computer Science", code: "BSCS" },
+  { title: "Bachelor of Science in Geodetic Engineering", code: "BSGE" },
+  { title: "Bachelor of Science in Mechanical Engineering", code: "BSME" },
+  { title: "Bachelor of Science in Meteorology", code: "BSMet" },
+  { title: "Bachelor of Science in Environmental Science", code: "BSES" },
+  { title: "Bachelor of Science in Forestry", code: "BSF" },
+  { title: "Bachelor of Science in Agribusiness", code: "BSAB" },
+  { title: "Bachelor of Science in Economics", code: "BSE" },
+  { title: "Bachelor of Science in Hospitality Management", code: "BSHM" },
+  { title: "Bachelor of Science in Tourism Management", code: "BSTM" },
+  { title: "Bachelor of Science in Nursing", code: "BSN" },
+  { title: "Doctor of Veterinary Medicine", code: "DVM" },
 ];
 
-export default function BindingRequestForm({ isOpen, onClose = null, refetch = null, email = ''}) {
-
+export default function BindingRequestForm({
+  isOpen,
+  onClose = null,
+  refetch = null,
+  email = "",
+}) {
   const [formData, setFormData] = useState(initialFormData);
   const [operatingDays, setOperatingDays] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = fetchOperatingDates();
-    return () => unsubscribe();
+    // const unsubscribe = fetchOperatingDates();
+    const fetchData = async () => {
+      const { dates } = (await fetchLatestOperationDate())[0];
+      const formattedDates = dates.map((date) =>
+        format(new Date(date.seconds * 1000), "yyyy-MM-dd"),
+      );
+      if (dates) {
+        setOperatingDays(formattedDates);
+      }
+    };
+    fetchData();
+
+    return () => fetchData();
   }, []);
 
-  const fetchOperatingDates = () => {
-    const currentYear = new Date().getFullYear().toString();
-    const docRef = doc(db, 'operatingSchedule', currentYear);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setOperatingDays(docSnap.data().operatingDays);
-      }
-    });
-    return unsubscribe;
-  }
-  
   const isDayDisabled = (date) => {
-    const dateString = format(date, 'yyyy-MM-dd');
-    const todayString = format(new Date(), 'yyyy-MM-dd');
-    return (operatingDays.includes(dateString) && dateString >= todayString);
+    const dateString = format(date, "yyyy-MM-dd");
+    const todayString = format(new Date(), "yyyy-MM-dd");
+
+    console.log({ operatingDays, dateString, todayString });
+    const formattedOperatingDays = operatingDays.map((date) =>
+      format(date, "yyyy-MM-dd"),
+    );
+    return (
+      formattedOperatingDays.includes(dateString) && dateString >= todayString
+    );
   };
 
   const handleChange = (e) => {
@@ -107,52 +122,57 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
       setFormData({ ...formData, [name]: value });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // sanitization
-    let sanitizedData = {...formData};
+    let sanitizedData = { ...formData };
     for (let field in sanitizedData) {
-      if (typeof sanitizedData[field] === 'string') {
+      if (typeof sanitizedData[field] === "string") {
         sanitizedData[field] = sanitizedData[field].trim(); // Remove leading/trailing white spaces
-        sanitizedData[field] = sanitizedData[field].replace(/<[^>]*>/g, ''); // Remove any HTML tags
+        sanitizedData[field] = sanitizedData[field].replace(/<[^>]*>/g, ""); // Remove any HTML tags
       }
-    }  
+    }
 
     // display names for dialogs
     const fieldDisplayNames = {
-      firstName: 'First Name',
-      middleName: 'Middle Name',
-      lastName: 'Last Name',
-      studentNumberPart1: 'Student Number',
-      studentNumberPart2: 'Student Number',
-      studentNumberPart3: 'Student Number',
-      email: 'Email Address',
-      programCode: 'Program Code',
-      title: 'Thesis Title',
-      copies: 'Number of Copies',
-      pdfFile: 'PDF File',
-      docxFile: 'Word File',
-      idPhoto: 'ID Photo',
-      appointmentDate: 'Appointment Date',
+      firstName: "First Name",
+      middleName: "Middle Name",
+      lastName: "Last Name",
+      studentNumberPart1: "Student Number",
+      studentNumberPart2: "Student Number",
+      studentNumberPart3: "Student Number",
+      email: "Email Address",
+      programCode: "Program Code",
+      title: "Thesis Title",
+      copies: "Number of Copies",
+      pdfFile: "PDF File",
+      docxFile: "Word File",
+      idPhoto: "ID Photo",
+      appointmentDate: "Appointment Date",
     };
     // check if inputs are valid
-    const requiredFields = Array.from(document.querySelectorAll('input:required, select:required, textarea:required')).map(input => input.name);
+    const requiredFields = Array.from(
+      document.querySelectorAll(
+        "input:required, select:required, textarea:required",
+      ),
+    ).map((input) => input.name);
     for (let field of requiredFields) {
-      if(sanitizedData[field] == '' || sanitizedData[field] == null) {
-        alert(`Please fill out the ${fieldDisplayNames[field] || field} field.`);
+      if (sanitizedData[field] == "" || sanitizedData[field] == null) {
+        alert(
+          `Please fill out the ${fieldDisplayNames[field] || field} field.`,
+        );
         return;
       }
     }
-    if (!programList.find(program => program.code === formData.programCode)) {
-      alert('Invalid program code.');
+    if (!programList.find((program) => program.code === formData.programCode)) {
+      alert("Invalid program code.");
       return;
     }
-    await fetchOperatingDates();
+
     if (!operatingDays.includes(formData.appointmentDate)) {
-      alert('Invalid appointment date.');
+      alert("Invalid appointment date.");
       console.log(operatingDays);
       console.log(formData.appointmentDate);
       return;
@@ -177,22 +197,36 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
     }
 
     // creating binding order request
-    const transactionId = generateUniqueId(formData.email.split('@')[0]);
-    const pdfUploadTask = startUpload(formData.pdfFile, `BindingOrders/${transactionId}/pdfFile`);
-    const docxUploadTask = startUpload(formData.docxFile, `BindingOrders/${transactionId}/docxFile`);
-    const idPhotoUploadTask = startUpload(formData.idPhoto, `BindingOrders/${transactionId}/idPhoto`);
-    const requestDate = format(new Date(), 'yyyy-MM-dd');
+    const transactionId = generateUniqueId(formData.email.split("@")[0]);
+    const pdfUploadTask = startUpload(
+      formData.pdfFile,
+      `BindingOrders/${transactionId}/pdfFile`,
+    );
+    const docxUploadTask = startUpload(
+      formData.docxFile,
+      `BindingOrders/${transactionId}/docxFile`,
+    );
+    const idPhotoUploadTask = startUpload(
+      formData.idPhoto,
+      `BindingOrders/${transactionId}/idPhoto`,
+    );
+    const requestDate = format(new Date(), "yyyy-MM-dd");
     const studentNumber = `${formData.studentNumberPart1}-${formData.studentNumberPart2}-${formData.studentNumberPart3}`;
-    const { studentNumberPart1, studentNumberPart2, studentNumberPart3, ...restOfFormData } = formData; // destructuring
-    
-    try {
+    const {
+      studentNumberPart1,
+      studentNumberPart2,
+      studentNumberPart3,
+      ...restOfFormData
+    } = formData; // destructuring
 
-      const [pdfUploadSnapshot, docxUploadSnapshot, idPhotoUploadSnapshot] = await Promise.all([pdfUploadTask, docxUploadTask, idPhotoUploadTask]);
-      
+    try {
+      const [pdfUploadSnapshot, docxUploadSnapshot, idPhotoUploadSnapshot] =
+        await Promise.all([pdfUploadTask, docxUploadTask, idPhotoUploadTask]);
+
       const pdfFileURL = await getDownloadURL(pdfUploadSnapshot);
       const docxFileURL = await getDownloadURL(docxUploadSnapshot);
-      const idPhotoURL = await getDownloadURL(idPhotoUploadSnapshot);      
-      
+      const idPhotoURL = await getDownloadURL(idPhotoUploadSnapshot);
+
       const transactionData = {
         ...restOfFormData,
         studentNumber,
@@ -204,7 +238,7 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
         ackID: null,
         amount: null,
         bindID: null,
-        remarks: '',
+        remarks: "",
         isClaimed: false,
         isPaid: false,
       };
@@ -218,19 +252,22 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
       try {
         console.log("Priority adding...");
         const docRef = doc(db, "bindings", transactionId);
-        await updateDoc(docRef, {priorityNum});
+        await updateDoc(docRef, { priorityNumber });
         console.log("Priority added!");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
-      window.confirm(`Congratulations! Your Binding Order Request has been successfully submitted. We've sent you an email at ${restOfFormData.email} with your priority number and further instructions. Please check your inbox.`);
+      window.confirm(
+        `Congratulations! Your Binding Order Request has been successfully submitted. We've sent you an email at ${restOfFormData.email} with your priority number and further instructions. Please check your inbox.`,
+      );
       setFormData(initialFormData);
-
     } catch (error) {
-      await deleteDocument('BindingOrders', transactionId);
-    
-      console.error('Error creating transaction: ', error);
-      window.confirm('An error occured during request submission. Please try again.');
+      await deleteDocument("BindingOrders", transactionId);
+
+      console.error("Error creating transaction: ", error);
+      window.confirm(
+        "An error occured during request submission. Please try again.",
+      );
     } finally {
       // if (pdfUploadTask) {
       //   pdfUploadTask.cancel();
@@ -243,18 +280,18 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
       // }
     }
   };
-  
+
   const handleReset = () => {
-    if (window.confirm('Are you sure you want to reset the form?')) {
+    if (window.confirm("Are you sure you want to reset the form?")) {
       setFormData(initialFormData);
     }
   };
 
   useEffect(() => {
     if (email) {
-      const studentNumber = email.split('@')[0];
-      setFormData({...formData, studentNumber});
-      const studentNumberParts = email.split('@')[0].split('-');
+      const studentNumber = email.split("@")[0];
+      setFormData({ ...formData, studentNumber });
+      const studentNumberParts = email.split("@")[0].split("-");
       if (studentNumberParts.length === 3) {
         setFormData({
           ...formData,
@@ -332,44 +369,44 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
           >
             Student Number <span className="text-red-600">*</span>
           </label>
-        <div className="flex items-center md:max-w-md lg:max-w-lg">
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="studentNumberPart1"
-            name="studentNumberPart1"
-            type="text"
-            placeholder="00"
-            pattern="^\d{2}$"
-            onChange={handleChange}
-            value={formData.studentNumberPart1}
-            maxLength="2"
-            required
-          />
-          <span className="mx-2">-</span>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="studentNumberPart2"
-            name="studentNumberPart2"
-            type="text"
-            placeholder="0"
-            pattern="^\d$"
-            onChange={handleChange}
-            value={formData.studentNumberPart2}
-            maxLength="1"
-            required
-          />
-          <span className="mx-2">-</span>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="studentNumberPart3"
-            name="studentNumberPart3"
-            type="text"
-            placeholder="00000"
-            pattern="^\d{5}$"
-            onChange={handleChange}
-            value={formData.studentNumberPart3}
-            maxLength="5"
-            required
+          <div className="flex items-center md:max-w-md lg:max-w-lg">
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="studentNumberPart1"
+              name="studentNumberPart1"
+              type="text"
+              placeholder="00"
+              pattern="^\d{2}$"
+              onChange={handleChange}
+              value={formData.studentNumberPart1}
+              maxLength="2"
+              required
+            />
+            <span className="mx-2">-</span>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="studentNumberPart2"
+              name="studentNumberPart2"
+              type="text"
+              placeholder="0"
+              pattern="^\d$"
+              onChange={handleChange}
+              value={formData.studentNumberPart2}
+              maxLength="1"
+              required
+            />
+            <span className="mx-2">-</span>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="studentNumberPart3"
+              name="studentNumberPart3"
+              type="text"
+              placeholder="00000"
+              pattern="^\d{5}$"
+              onChange={handleChange}
+              value={formData.studentNumberPart3}
+              maxLength="5"
+              required
             />
           </div>
         </div>
@@ -394,47 +431,47 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
         </div>
         {/* Program list and their corresponding codes */}
         <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="programCode"
-        >
-          Program Code <span className="text-red-600">*</span>
-        </label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="programCode"
-          name="programCode"
-          onChange={handleChange}
-          value={formData.programCode}
-          required
-        >
-          <option value="">Select a program</option>
-          {programList.map((program, index) => (
-            <option key={index} value={program.code}>
-              {program.title}
-            </option>
-          ))}
-          required
-        </select>
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="programCode"
+          >
+            Program Code <span className="text-red-600">*</span>
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="programCode"
+            name="programCode"
+            onChange={handleChange}
+            value={formData.programCode}
+            required
+          >
+            <option value="">Select a program</option>
+            {programList.map((program, index) => (
+              <option key={index} value={program.code}>
+                {program.title}
+              </option>
+            ))}
+            required
+          </select>
         </div>
         {/* Thesis title */}
         <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="title"
-        >
-          Thesis Title <span className="text-red-600">*</span>
-        </label>
-        <textarea
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="title"
-          name="title"
-          type="text"
-          placeholder="Thesis Title"
-          onChange={handleChange}
-          value={formData.title}
-          required
-        />
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="title"
+          >
+            Thesis Title <span className="text-red-600">*</span>
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
+            name="title"
+            type="text"
+            placeholder="Thesis Title"
+            onChange={handleChange}
+            value={formData.title}
+            required
+          />
         </div>
         {/* Number of Copies */}
         <div className="mb-4">
@@ -463,7 +500,8 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="pdfFile"
           >
-            Upload manuscript in PDF format (.pdf) <span className="text-red-600">*</span>
+            Upload manuscript in PDF format (.pdf){" "}
+            <span className="text-red-600">*</span>
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -481,7 +519,8 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="docxFile"
           >
-            Upload manuscript in Word format (.docx) <span className="text-red-600">*</span>
+            Upload manuscript in Word format (.docx){" "}
+            <span className="text-red-600">*</span>
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -499,7 +538,8 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="idPhoto"
           >
-            Upload 2x2 ID photo (.jpg/.jpeg) <span className="text-red-600">*</span>
+            Upload 2x2 ID photo (.jpg/.jpeg){" "}
+            <span className="text-red-600">*</span>
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -525,8 +565,8 @@ export default function BindingRequestForm({ isOpen, onClose = null, refetch = n
             type="date"
             selected={formData.appointmentDate}
             onChange={(date) => {
-              const formattedDate = format(date, 'yyyy-MM-dd');
-              setFormData({ ...formData, appointmentDate: formattedDate })
+              const formattedDate = format(date, "yyyy-MM-dd");
+              setFormData({ ...formData, appointmentDate: formattedDate });
             }}
             filterDate={isDayDisabled}
             placeholderText="Select an appointment date"
