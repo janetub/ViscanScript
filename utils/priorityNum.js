@@ -2,11 +2,11 @@ import { collection, doc, getDocs, query, orderBy, limit, updateDoc, where } fro
 
 // TODO: proper documentation, add to documentation the argument formats
 // Function to restart priority numbers of certain statuses
-export async function restartPriorityNumbers(db, statuses, isIncludedStatuses, appointmentDate, desiredDate, maxDocuments) {
+export async function restartPriorityNumbers(db, statuses, isIncludedStatuses, apptDate, desiredDate, maxDocuments) {
     const bindingsRef = collection(db, 'bindings');
-    let bindingsQuery = query(bindingsRef, orderBy('appointmentDate'), orderBy('priorityNum'));
+    let bindingsQuery = query(bindingsRef, orderBy('apptDate'), orderBy('priorityNum'));
 
-    // Filter by status and appointmentDate
+    // Filter by status and apptDate
     if (statuses && statuses.length > 0) {
         if(isIncludedStatuses){
             bindingsQuery = query(bindingsQuery, where('status', 'in', statuses));
@@ -15,8 +15,8 @@ export async function restartPriorityNumbers(db, statuses, isIncludedStatuses, a
         }
         
     }
-    if (appointmentDate && appointmentDate.length > 0) {
-        bindingsQuery = query(bindingsQuery, where('appointmentDate', 'in', appointmentDate));
+    if (apptDate && apptDate.length > 0) {
+        bindingsQuery = query(bindingsQuery, where('apptDate', 'in', apptDate));
     }
 
     // Limit the number of documents
@@ -27,7 +27,7 @@ export async function restartPriorityNumbers(db, statuses, isIncludedStatuses, a
     const bindingsSnapshot = await getDocs(bindingsQuery);
     let newPriority = 1;
     bindingsSnapshot.docs.forEach((doc) => {
-        updateDoc(doc.ref, { priorityNum: newPriority++, appointmentDate: desiredDate });
+        updateDoc(doc.ref, { priorityNum: newPriority++, apptDate: desiredDate });
     });
 }
 
@@ -64,7 +64,7 @@ export async function countData(db, collectionNames, fields, values) {
 
 export async function assignPriorityNum(db, date) {
     const collectionRef = collection(db, 'bindings');
-    const queryRef = query(collectionRef, where('appointmentDate', '==', date));
+    const queryRef = query(collectionRef, where('apptDate', '==', date));
 
     const snapshot = await getDocs(queryRef);
     if (snapshot.empty) {
@@ -84,7 +84,7 @@ export async function assignPriorityNum(db, date) {
 
 export async function cleanPriorityNumbers(db, date) {
     const collectionRef = collection(db, 'bindings');
-        let queryRef = query(collectionRef, orderBy('appointmentDate'), orderBy('priorityNum'));
+        let queryRef = query(collectionRef, orderBy('apptDate'), orderBy('priorityNum'));
 
         const snapshot = await getDocs(queryRef);
         let expectedPriority = 1;

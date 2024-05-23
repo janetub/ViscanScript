@@ -222,9 +222,9 @@ export default function BindingTable({
                 <div className="justify-center self-stretch px-2 py-1 my-auto text-violet-800 whitespace-nowrap bg-purple-200 aspect-[2.5] leading-[143%] rounded-[100px]">
                   {binding.status}
                 </div>
-                <div className="self-stretch my-auto text-xs text-neutral-500">
+                {/* <div className="self-stretch my-auto text-xs text-neutral-500">
                   {binding.date}
-                </div>
+                </div> */}
               </div>
             ))
           )}

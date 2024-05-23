@@ -15,18 +15,28 @@ import { updateBindingStatus } from "@/utils/updateBindings";
 
 BindingDetails.defaultProps = {
   binding: {
-    priorityNum: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    studentNumber: "",
-    programeCode: "",
-    email: "",
-    title: "",
-    status: "",
-    ackID: "",
-    bindID: "",
-    id: "",
+    ackID: "", 
+    amount: 0, 
+    apptDate: "", 
+    bindID: "", 
+    copies: 0, 
+    docxLink: "", 
+    email: "", 
+    firstName: "", 
+    idPhotoLink: "", 
+    isClaimed: false, 
+    isPaid: false, 
+    lastName: "", 
+    middleName: "", 
+    orID: "",
+    pdfLink: "", 
+    priorityNum: 0, 
+    programCode: "", 
+    remarks: "", 
+    requestDate: "",
+    status: "", 
+    studentNum: "",
+    title: "", 
   },
 };
 
@@ -52,7 +62,7 @@ export default function BindingDetails({ binding, onClose }) {
   };
 
   return (
-    <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
+    <div className="flex flex-col ml-5 w-[40%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow max-md:mt-5">
         <div className="relative flex flex-col pt-2.5 pr-3 pb-2.5 pl-3 w-full bg-sky-100 rounded-xl">
           <button
@@ -87,7 +97,7 @@ export default function BindingDetails({ binding, onClose }) {
               }${binding.lastName}`}
             </div>
             <div className="self-center mt-2.5 text-sm font-semibold text-center text-neutral-500">
-              {binding.studentNumber}
+              {binding.studentNum}
             </div>
             <div className="self-center mt-2.5 text-xl font-bold text-center text-neutral-800">
               {binding.programeCode}
@@ -114,12 +124,33 @@ export default function BindingDetails({ binding, onClose }) {
               {binding.status}
             </div>
           </div>
+          {/* Next Status Button */}
+          <div className="flex justify-center text-center text-white mt-4">
+            <button
+                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                onClick={() => handleProceedNextStatus(binding.status)}
+              >
+                Update to Next Status
+            </button>
+            {/* <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
+              Complete Order
+            </div>
+            <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
+              Complete Order
+            </div> */}
+          </div>
           <div className="mt-7 font-semibold text-neutral-500">
             Acknowledgement ID: {binding.ackID || "N/A"}
             <br />
-            Order ID: {binding.bindID || "N/A"}
+            Binding ID: {binding.bindID || "N/A"}
             <br />
-            OR ID: {binding.id || "N/A"}
+            OR ID: {binding.orID || "N/A"}
+            <br />
+            Appointment Date: {binding.apptDate || "N/A"}
+            <br />
+            Copies: {binding.copies || "N/A"}
+            <br />
+            Amount Due: {binding.amount || "N/A"}
           </div>
           <div className="flex gap-0 justify-between mt-7 whitespace-nowrap text-neutral-800">
             <div className="grow">Attachment</div>
@@ -162,21 +193,21 @@ export default function BindingDetails({ binding, onClose }) {
               <div className="text-neutral-400">3/20/2021 12:47:03 </div>
             </a>
           </div>
-          <div className="flex gap-3 justify-between pr-2 mt-14 mb-1 text-center text-white whitespace-nowrap max-md:mt-10">
-            <div className="mt-7">
-              <button
-                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                onClick={() => handleProceedNextStatus(binding.status)}
-              >
-                Proceed to Next Status
-              </button>
-            </div>
-            {/* <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
-              Complete Order
-            </div>
-            <div className="grow justify-center px-5 py-3 bg-sky-500 rounded">
-              Complete Order
-            </div> */}
+          <div className="flex gap-3 justify-between mt-3 text-xs leading-5 whitespace-nowrap">
+            <Image
+              loading="lazy"
+              src={attachIcon}
+              className="shrink-0 h-6 w-6 aspect-square"
+              alt="File Attach Icon"
+            />
+            <a
+              href={binding.pdfFile}
+              target="_blank"
+              className="flex flex-col flex-1"
+            >
+              <div className="text-neutral-800">File Name.jpeg</div>
+              <div className="text-neutral-400">3/20/2021 12:47:03 </div>
+            </a>
           </div>
         </div>
       </div>

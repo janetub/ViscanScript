@@ -26,9 +26,9 @@ const initialFormData = {
   firstName: "",
   middleName: "",
   lastName: "",
-  studentNumberPart1: "",
-  studentNumberPart2: "",
-  studentNumberPart3: "",
+  studentNumPart1: "",
+  studentNumPart2: "",
+  studentNumPart3: "",
   email: "",
   programCode: "",
   title: "",
@@ -36,7 +36,7 @@ const initialFormData = {
   pdfFile: null,
   docxFile: null,
   idPhoto: null,
-  appointmentDate: "",
+  apptDate: "",
 };
 
 const programList = [
@@ -140,9 +140,9 @@ export default function BindingRequestForm({
       firstName: "First Name",
       middleName: "Middle Name",
       lastName: "Last Name",
-      studentNumberPart1: "Student Number",
-      studentNumberPart2: "Student Number",
-      studentNumberPart3: "Student Number",
+      studentNumPart1: "Student Number",
+      studentNumPart2: "Student Number",
+      studentNumPart3: "Student Number",
       email: "Email Address",
       programCode: "Program Code",
       title: "Thesis Title",
@@ -150,7 +150,7 @@ export default function BindingRequestForm({
       pdfFile: "PDF File",
       docxFile: "Word File",
       idPhoto: "ID Photo",
-      appointmentDate: "Appointment Date",
+      apptDate: "Appointment Date",
     };
     // check if inputs are valid
     const requiredFields = Array.from(
@@ -171,10 +171,10 @@ export default function BindingRequestForm({
       return;
     }
 
-    if (!operatingDays.includes(formData.appointmentDate)) {
+    if (!operatingDays.includes(formData.apptDate)) {
       alert("Invalid appointment date.");
       console.log(operatingDays);
-      console.log(formData.appointmentDate);
+      console.log(formData.apptDate);
       return;
     }
     // show review popup
@@ -182,7 +182,7 @@ export default function BindingRequestForm({
       First Name: ${formData.firstName}
       Middle Name: ${formData.middleName}
       Last Name: ${formData.lastName}
-      Student Number: ${formData.studentNumberPart1}-${formData.studentNumberPart2}-${formData.studentNumberPart3}
+      Student Number: ${formData.studentNumPart1}-${formData.studentNumPart2}-${formData.studentNumPart3}
       Email Address: ${formData.email}
       Program Code: ${formData.programCode}
       Thesis Title: ${formData.title}
@@ -190,7 +190,7 @@ export default function BindingRequestForm({
       PDF Filename: ${formData.pdfFile},
       Docx Filename: ${formData.docxFile},
       ID Photo Filename: ${formData.idPhoto},
-      Appointment Date: ${formData.appointmentDate}
+      Appointment Date: ${formData.apptDate}
     `);
     if (!shouldSubmit) {
       return;
@@ -211,11 +211,11 @@ export default function BindingRequestForm({
       `BindingOrders/${transactionId}/idPhoto`,
     );
     const requestDate = format(new Date(), "yyyy-MM-dd");
-    const studentNumber = `${formData.studentNumberPart1}-${formData.studentNumberPart2}-${formData.studentNumberPart3}`;
+    const studentNum = `${formData.studentNumPart1}-${formData.studentNumPart2}-${formData.studentNumPart3}`;
     const {
-      studentNumberPart1,
-      studentNumberPart2,
-      studentNumberPart3,
+      studentNumPart1,
+      studentNumPart2,
+      studentNumPart3,
       ...restOfFormData
     } = formData; // destructuring
 
@@ -229,15 +229,16 @@ export default function BindingRequestForm({
 
       const transactionData = {
         ...restOfFormData,
-        studentNumber,
+        studentNum,
         requestDate,
         status: "Pending",
-        pdfFile: pdfFileURL,
-        docxFile: docxFileURL,
-        idPhoto: idPhotoURL,
-        ackID: null,
-        amount: null,
-        bindID: null,
+        pdfLink: pdfFileURL,
+        docxLink: docxFileURL,
+        idPhotoLink: idPhotoURL,
+        ackID: "",
+        amount: "",
+        bindID: "",
+        orID: "",
         remarks: "",
         isClaimed: false,
         isPaid: false,
@@ -248,11 +249,11 @@ export default function BindingRequestForm({
       } catch (error) {
         console.error("Error writing document: ", error);
       }
-      const priorityNum = await assignPriorityNum(db, formData.appointmentDate);
+      const priorityNum = await assignPriorityNum(db, formData.apptDate);
       try {
         console.log("Priority adding...");
         const docRef = doc(db, "bindings", transactionId);
-        await updateDoc(docRef, { priorityNumber });
+        await updateDoc(docRef, { priorityNum });
         console.log("Priority added!");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -289,15 +290,15 @@ export default function BindingRequestForm({
 
   useEffect(() => {
     if (email) {
-      const studentNumber = email.split("@")[0];
-      setFormData({ ...formData, studentNumber });
-      const studentNumberParts = email.split("@")[0].split("-");
-      if (studentNumberParts.length === 3) {
+      const studentNum = email.split("@")[0];
+      setFormData({ ...formData, studentNum });
+      const studentNumParts = email.split("@")[0].split("-");
+      if (studentNumParts.length === 3) {
         setFormData({
           ...formData,
-          studentNumberPart1: studentNumberParts[0],
-          studentNumberPart2: studentNumberParts[1],
-          studentNumberPart3: studentNumberParts[2],
+          studentNumPart1: studentNumParts[0],
+          studentNumPart2: studentNumParts[1],
+          studentNumPart3: studentNumParts[2],
           email: email,
         });
       }
@@ -365,46 +366,46 @@ export default function BindingRequestForm({
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="studentNumber"
+            htmlFor="studentNum"
           >
             Student Number <span className="text-red-600">*</span>
           </label>
           <div className="flex items-center md:max-w-md lg:max-w-lg">
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="studentNumberPart1"
-              name="studentNumberPart1"
+              id="studentNumPart1"
+              name="studentNumPart1"
               type="text"
               placeholder="00"
               pattern="^\d{2}$"
               onChange={handleChange}
-              value={formData.studentNumberPart1}
+              value={formData.studentNumPart1}
               maxLength="2"
               required
             />
             <span className="mx-2">-</span>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="studentNumberPart2"
-              name="studentNumberPart2"
+              id="studentNumPart2"
+              name="studentNumPart2"
               type="text"
               placeholder="0"
               pattern="^\d$"
               onChange={handleChange}
-              value={formData.studentNumberPart2}
+              value={formData.studentNumPart2}
               maxLength="1"
               required
             />
             <span className="mx-2">-</span>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="studentNumberPart3"
-              name="studentNumberPart3"
+              id="studentNumPart3"
+              name="studentNumPart3"
               type="text"
               placeholder="00000"
               pattern="^\d{5}$"
               onChange={handleChange}
-              value={formData.studentNumberPart3}
+              value={formData.studentNumPart3}
               maxLength="5"
               required
             />
@@ -555,18 +556,18 @@ export default function BindingRequestForm({
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="appointmentDate"
+            htmlFor="apptDate"
           >
             Appointment Date <span className="text-red-600">*</span>
           </label>
           <ReactDatePicker
-            id="appointmentDate"
-            name="appointmentDate"
+            id="apptDate"
+            name="apptDate"
             type="date"
-            selected={formData.appointmentDate}
+            selected={formData.apptDate}
             onChange={(date) => {
               const formattedDate = format(date, "yyyy-MM-dd");
-              setFormData({ ...formData, appointmentDate: formattedDate });
+              setFormData({ ...formData, apptDate: formattedDate });
             }}
             filterDate={isDayDisabled}
             placeholderText="Select an appointment date"

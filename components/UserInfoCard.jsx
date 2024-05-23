@@ -6,10 +6,10 @@ export default function UserInfoCard({ userInfo, onClose }) {
   const {
     id,
     name,
-    studentNumber,
+    studentNum,
     email,
     programCode,
-    appointmentDate,
+    apptDate,
     title,
     copies,
     remarks,
@@ -50,7 +50,7 @@ export default function UserInfoCard({ userInfo, onClose }) {
         <div className="w-full">
           <div className="flex justify-between items-center text-gray-700 text-base mb-2">
             <p>Student Number</p>
-            <p>{studentNumber}</p>
+            <p>{studentNum}</p>
           </div>
           <div className="flex justify-between items-center text-gray-700 text-base mb-2">
             <p>Email</p>
@@ -62,7 +62,7 @@ export default function UserInfoCard({ userInfo, onClose }) {
           </div>
           <div className="flex justify-between items-center text-gray-700 text-base mb-2">
             <p>Appointment Date</p>
-            <p>{appointmentDate}</p>
+            <p>{apptDate}</p>
           </div>
         </div>
       </div>
