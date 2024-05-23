@@ -150,7 +150,7 @@ export default function BindingDetails({ binding, onClose }) {
             <br />
             Copies: {binding.copies || "N/A"}
             <br />
-            Amount Due: {binding.amount || "N/A"}
+            Amount Due: {binding.amount || binding.copies*250 || "N/A"}
           </div>
           <div className="flex gap-0 justify-between mt-7 whitespace-nowrap text-neutral-800">
             <div className="grow">Attachment</div>

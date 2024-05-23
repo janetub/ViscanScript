@@ -20,7 +20,7 @@ import { deleteDocument } from "@/utils/firestoreService";
 import { assignPriorityNum } from "@/utils/priorityNum";
 import "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
-import { fetchLatestOperationDate } from "@/api/operationDate";
+import { fetchLatestOperationDates } from "@/api/operationDate";
 
 const initialFormData = {
   firstName: "",
@@ -86,31 +86,22 @@ export default function BindingRequestForm({
   const [operatingDays, setOperatingDays] = useState([]);
 
   useEffect(() => {
-    // const unsubscribe = fetchOperatingDates();
     const fetchData = async () => {
-      const { dates } = (await fetchLatestOperationDate())[0];
-      const formattedDates = dates.map((date) =>
-        format(new Date(date.seconds * 1000), "yyyy-MM-dd"),
-      );
+      const dates = await fetchLatestOperationDates();
       if (dates) {
-        setOperatingDays(formattedDates);
+        setOperatingDays(dates);
       }
     };
     fetchData();
-
-    return () => fetchData();
   }, []);
 
   const isDayDisabled = (date) => {
     const dateString = format(date, "yyyy-MM-dd");
     const todayString = format(new Date(), "yyyy-MM-dd");
 
-    console.log({ operatingDays, dateString, todayString });
-    const formattedOperatingDays = operatingDays.map((date) =>
-      format(date, "yyyy-MM-dd"),
-    );
+    // console.log({ operatingDays, dateString, todayString });
     return (
-      formattedOperatingDays.includes(dateString) && dateString >= todayString
+      operatingDays.includes(dateString) && dateString >= todayString
     );
   };
 
@@ -244,24 +235,24 @@ export default function BindingRequestForm({
         isPaid: false,
       };
       try {
-        await setDoc(doc(db, "bindings", transactionId), transactionData);
-        console.log("Document successfully written!");
-      } catch (error) {
-        console.error("Error writing document: ", error);
-      }
-      const priorityNum = await assignPriorityNum(db, formData.apptDate);
-      try {
-        console.log("Priority adding...");
         const docRef = doc(db, "bindings", transactionId);
+        await setDoc(docRef, transactionData);
+        console.log("Document successfully written!");
+  
+        const priorityNum = await assignPriorityNum(db, formData.apptDate);
         await updateDoc(docRef, { priorityNum });
         console.log("Priority added!");
+  
+        window.confirm(
+          `Congratulations! Your Binding Order Request has been successfully submitted. We've sent you an email at ${restOfFormData.email} with your priority number and further instructions. Please check your inbox.`,
+        );
+        setFormData(initialFormData);
       } catch (error) {
-        console.error("Error updating document: ", error);
+        console.error("Error writing document or adding priority: ", error);
+        window.confirm(
+          "An error occurred during request submission. Please try again.",
+        );
       }
-      window.confirm(
-        `Congratulations! Your Binding Order Request has been successfully submitted. We've sent you an email at ${restOfFormData.email} with your priority number and further instructions. Please check your inbox.`,
-      );
-      setFormData(initialFormData);
     } catch (error) {
       await deleteDocument("BindingOrders", transactionId);
 

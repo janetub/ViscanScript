@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, orderBy, limit, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, orderBy, limit, updateDoc, where, getDoc } from 'firebase/firestore';
 
 // TODO: proper documentation, add to documentation the argument formats
 // Function to restart priority numbers of certain statuses
@@ -63,25 +63,23 @@ export async function countData(db, collectionNames, fields, values) {
 }
 
 export async function assignPriorityNum(db, date) {
-    const collectionRef = collection(db, 'bindings');
-    const queryRef = query(collectionRef, where('apptDate', '==', date));
+    try {
+        const scheduleDocRef = doc(db, 'operatingSchedule', date);
+        const scheduleDoc = await getDoc(scheduleDocRef);
 
-    const snapshot = await getDocs(queryRef);
-    if (snapshot.empty) {
-        return 1;
-    }
-
-    let highestPriorityNum = 0;
-    snapshot.docs.forEach(doc => {
-        const priorityNum = doc.data().priorityNum;
-        if (priorityNum > highestPriorityNum) {
-            highestPriorityNum = priorityNum;
+        if (!scheduleDoc.exists()) {
+            return 1;
         }
-    });
 
-    return highestPriorityNum + 1;
+        const scheduleData = scheduleDoc.data();
+        const lastPriorityNum = scheduleData.lastPriorityNum || 0;
+
+        return lastPriorityNum + 1;
+    } catch (error) {
+        console.error("Error assigning priority number: ", error);
+        throw error;
+    }
 }
-
 export async function cleanPriorityNumbers(db, date) {
     const collectionRef = collection(db, 'bindings');
         let queryRef = query(collectionRef, orderBy('apptDate'), orderBy('priorityNum'));
@@ -92,7 +90,6 @@ export async function cleanPriorityNumbers(db, date) {
         snapshot.docs.forEach(async (doc) => {
             const actualPriority = docData.priorityNum;
 
-            // If the actual priority does not match the expected priority, update it
             if (actualPriority !== expectedPriority) {
                 await updateDoc(doc.ref, { priorityNum: expectedPriority });
             }

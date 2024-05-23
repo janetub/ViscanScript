@@ -1,8 +1,8 @@
 import {
-  fetchLatestOperationDate,
-  updateOperationDate,
+  fetchLatestOperationDates,
+  updateOperatingSchedule ,
 } from "@/api/operationDate";
-import { isWeekend } from "date-fns";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import Swal from "sweetalert2";
@@ -13,25 +13,28 @@ export default function DateManagement() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { dates } = (await fetchLatestOperationDate())[0];
-      const formattedDates = dates.map((date) => new Date(date.seconds * 1000));
-      console.log("Formatted Dates: ", formattedDates);
-      if (dates) {
-        setSelectedDates(formattedDates);
-      }
+      console.log("Prev selected dates", selectedDates);
+      const schedules = await fetchLatestOperationDates();
+      console.log("fetched latest op dates", schedules);
+      setSelectedDates(schedules);
+      console.log("New selected dates", selectedDates);
     };
     fetchData();
   }, []);
 
+  const onChange = (dates) => {
+    setSelectedDates(dates);
+  };
+
   const handleSaveDates = async () => {
     setIsSaving(true);
-    await updateOperationDate(selectedDates);
+    const formattedDates = selectedDates.map((date) => format(date, "yyyy-MM-dd"));
+    await updateOperatingSchedule (formattedDates);
     setIsSaving(false);
 
     Swal.fire({
       icon: "success",
       title: "Operation Dates Updated",
-
       showConfirmButton: true,
     });
   };
@@ -44,24 +47,30 @@ export default function DateManagement() {
           {/* onClick={addBindings} For testing */}
         </div>
         <div className="flex flex-col px-5 pt-5 mt-4 bg-white rounded-xl max-md:max-w-full">
-          <div className="pb-2.5 mb-4 max-md:max-w-full">
-            <div className="flex gap-0  max-md:flex-col max-md:gap-0 max-md: ">
+          <div className="pb-2.5 mb-4 max-md:max-w-full px-10 py-10">
+            <div className="flex gap-0 max-md:flex-col max-md:gap-0 max-md: ">
               <ReactDatePicker
                 selectedDates={selectedDates}
                 selectsMultiple
                 onChange={onChange}
                 inline
-                filterDate={(date) => !isWeekend(date)}
+                filterDate={(date) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return date >= today;
+                }}
                 wrapperClassName="w-full"
               />
             </div>
-            <button
-              className="grow justify-center px-5 py-3 bg-sky-500 rounded text-white"
-              onClick={handleSaveDates}
-              disabled={isSaving}
-            >
-              {isSaving ? "Saving..." : "Save Dates"}
-            </button>
+            <div className="mt-5">
+              <button
+                className="grow justify-center px-5 py-3 bg-sky-500 rounded text-white"
+                onClick={handleSaveDates}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save Dates"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
