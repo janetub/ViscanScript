@@ -26,7 +26,7 @@ import DateManagement from "@/components/DateManagement";
  * It displays binding requests and provides functionality for managing user interactions.
  */
 export default function DashboardPage() {
-  const { currentUser, isLoggedIn, logOut } = UserAuth();
+  const { userProfilePhoto, isLoggedIn, logOut } = UserAuth();
   const [showDetails, setShowDetails] = useState(false);
   const [selectedBinding, setSelectedBinding] = useState({});
   const [bindings, setBindings] = useState([]);
@@ -123,7 +123,7 @@ export default function DashboardPage() {
               {/* Profile photo person */}
              <img
                 loading="lazy"
-                src={currentUser.photoURl}
+                src={userProfilePhoto}
                 className="rounded-full object-cover"
                 style={{ width: "32px", height: "32px" }}
                 alt="Profile"

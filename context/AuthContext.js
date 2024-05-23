@@ -29,6 +29,7 @@ export function AuthContextProvider({ children }) {
   const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [isFailedAttempt, setIsFailedAttempt] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfilePhoto, setUserProfilePhoto] = useState(null);
 
   useEffect(() => {
     try {
@@ -41,6 +42,12 @@ export function AuthContextProvider({ children }) {
       console.error("Error in useEffect: ", error);
     }
   }, [auth]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserProfilePhoto(currentUser.photoURL);
+    }
+  }, [currentUser]);
 
   const redirect = async () => {
     const provider = new GoogleAuthProvider();
@@ -105,6 +112,7 @@ export function AuthContextProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
+        userProfilePhoto,
         auth,
         currentUser,
         isAuthChecking,

@@ -227,7 +227,7 @@ export default function BindingTable({
                 }`}
                 onClick={() => handleBindingClick(binding)}
               >
-              <div className="flex">{binding.priorityNum}</div>
+              <div className="flex px-3 py-1 text-white-800 bg-gray-200 rounded-[5px]">{binding.priorityNum}</div>
               <div className="flex gap-2 justify-between self-stretch font-bold whitespace-nowrap">
                   {/* <img
                       loading="lazy"
@@ -241,7 +241,7 @@ export default function BindingTable({
                 <div className="flex-auto self-stretch my-auto text-xs">
                   {binding.title}
                 </div>
-                <div className="justify-center self-stretch px-2 py-1 my-auto text-violet-800 whitespace-nowrap bg-purple-200 aspect-[2.5] leading-[143%] rounded-[100px]">
+                <div className="px-3 py-1 text-violet-800 bg-purple-200 rounded-[100px]">
                   {binding.status}
                 </div>
                 {/* <div className="self-stretch my-auto text-xs text-neutral-500">

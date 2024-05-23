@@ -30,7 +30,7 @@ function BindingManagement({
           <div className="flex items-center gap-2">
               <button>Binding Requests for </button>
               <ReactDatePicker
-              className="w-[50%] text-gray-700 font-bold"
+              className="w-[50%] text-gray-700 font-bold whitespace-nowrap"
               selected={selectedApptDate}
               onChange={(date) => {
                 const formattedDate = format(date, "yyyy-MM-dd");
