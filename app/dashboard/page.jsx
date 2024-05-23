@@ -26,7 +26,7 @@ import DateManagement from "@/components/DateManagement";
  * It displays binding requests and provides functionality for managing user interactions.
  */
 export default function DashboardPage() {
-  const { isLoggedIn, logOut } = UserAuth();
+  const { currentUser, isLoggedIn, logOut } = UserAuth();
   const [showDetails, setShowDetails] = useState(false);
   const [selectedBinding, setSelectedBinding] = useState({});
   const [bindings, setBindings] = useState([]);
@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [selectedMainNav, setSelectedMainNav] = useState(
     MainNav.BINDING_MANAGEMENT,
   );
+
 
   if (!isLoggedIn) {
     return <LoginPage callingComponent="dashboard" />;
@@ -79,6 +80,10 @@ export default function DashboardPage() {
     setSelectedMainNav(mainNav);
   };
 
+  const handleSelectDashboard = () => {
+    //
+  };
+
   return (
     <div className="flex flex-col px-6 py-5 bg-white min-h-screen">
       <div className="flex gap-5 justify-between items-between">
@@ -90,17 +95,17 @@ export default function DashboardPage() {
             alt="VSU Script Logo"
           />
         </div>
-        <div className="flex gap-5 justify-center self-end">
-          <div className="flex justify-end mt-4">
+        <div className="flex gap-5 justify-center">
+          <div className="flex justify-end self-start mt-4">
             <button
-              className="text-sm text-violet-800 font-medium hover:underline focus:outline-none"
+              className="text-sm text-violet-800 font-medium self-start hover:underline focus:outline-none"
               onClick={handleLogout}
             >
               Signout
             </button>
           </div>
           {/* Notification bell */}
-          <div className="flex flex-col justify-center items-center self-start w-9 h-9rounded-lg px-full py-full">
+          <div className="flex flex-col justify-center items-center w-9 h-9rounded-lg px-full py-full">
             <div className="flex justify-center items-center px-2 w-9 h-9 rounded-lg bg-violet-100">
               <div className="flex overflow-hidden relative flex-col justify-center items-center w-5 aspect-square">
                 <img
@@ -116,11 +121,12 @@ export default function DashboardPage() {
             {/* Profile photo background circle */}
             <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center">
               {/* Profile photo person */}
-              <img
+             <img
                 loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/909b5b372470788d838099a166f91359a700a636c364e24d02dcea30c8ba037f?apiKey=e4fb5c3f22154b41a48f253e88461b6a&width=100"
+                src={currentUser.photoURl}
                 className="rounded-full object-cover"
                 style={{ width: "32px", height: "32px" }}
+                alt="Profile"
               />
             </div>
             {/* Profile settings */}
@@ -143,7 +149,7 @@ export default function DashboardPage() {
                     src="https://cdn.builder.io/api/v1/image/assets%2Fe4fb5c3f22154b41a48f253e88461b6a%2F842ec6b089b444098ed6040e03759ab3"
                     className="shrink-0 w-6 aspect-square"
                   />
-                  <div className="grow">Dashboard</div>
+                  <div className="grow" onClick={handleSelectDashboard}>Dashboard</div>
                 </div>
                 <div className="shrink-0 mt-4 h-px bg-sky-100 border border-sky-100 border-solid" />
                 <div

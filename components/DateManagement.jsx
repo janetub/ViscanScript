@@ -23,10 +23,6 @@ export default function DateManagement() {
     fetchData();
   }, []);
 
-  const onChange = (dates) => {
-    setSelectedDates(dates);
-  };
-
   const handleSaveDates = async () => {
     setIsSaving(true);
     await updateOperationDate(selectedDates);

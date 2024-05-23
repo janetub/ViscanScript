@@ -49,7 +49,6 @@ export default function LoginPage({ callingComponent }) {
       <div className="my-auto pb-10">
         {/* VSU Script Logo */}
         <Image
-          loading="lazy"
           src={vsuScript}
           className="self-center"
           alt="VSU Script Logo"

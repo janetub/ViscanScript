@@ -9,23 +9,26 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { fetchCollectionData } from "@/utils/getDocs";
 import Preloader from "./Preloader";
+import { format } from "date-fns";
 
 export default function BindingTable({
   toggleShowDetails,
   collectionName,
   bindingOrderStatus,
+  selectedApptDate,
 }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("newest");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [showSortOptions, setShowSortOptions] = useState(false);
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [itemsPerPage, setItemsPerPage] = useState(100);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [displayedBindings, setDisplayedBindings] = useState([]);
   const [currentBindings, setCurrentBindings] = useState([]);
+  const [selectedBinding, setSelectedBinding] = useState(null);
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -76,10 +79,8 @@ export default function BindingTable({
 
   useEffect(() => {
     setLoading(true);
-
     const fetchBindings = async () => {
       const fetchedBindings = await fetchCollectionData(collectionName);
-
       let filteredBindings;
       if (bindingOrderStatus && bindingOrderStatus !== "All") {
         filteredBindings = fetchedBindings.filter(
@@ -88,13 +89,24 @@ export default function BindingTable({
       } else {
         filteredBindings = fetchedBindings;
       }
+      if (selectedApptDate) {
+        console.log(selectedApptDate);
+        filteredBindings = filteredBindings.filter(
+          (binding) => binding.apptDate === selectedApptDate
+        );
+      } else {
+        filteredBindings = filteredBindings.filter(
+          (binding) => binding.apptDate === format(new Date(), "yyyy-MM-dd")
+        );
+      }
+      filteredBindings.sort((a, b) => a.priorityNum - b.priorityNum);
       setDisplayedBindings(filteredBindings);
       setLoading(false);
     };
 
     fetchBindings();
     setCurrentPage(1);
-  }, [collectionName, bindingOrderStatus]);
+  }, [collectionName, bindingOrderStatus, selectedApptDate]);
 
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);
@@ -110,10 +122,10 @@ export default function BindingTable({
 
   const handleSortChange = (order) => {
     let sortedBindings = [...displayedBindings];
-    if (order === "newest") {
+    if (order === "asc") {
       sortedBindings.sort((a, b) => a.priorityNum - b.priorityNum);
       setCurrentPage(1);
-    } else if (order === "oldest") {
+    } else if (order === "desc") {
       sortedBindings.sort((a, b) => b.priorityNum - a.priorityNum);
       const lastPage = Math.ceil(sortedBindings.length / itemsPerPage);
       setCurrentPage(lastPage);
@@ -121,6 +133,11 @@ export default function BindingTable({
     setDisplayedBindings(sortedBindings);
     setSortOrder(order);
     setShowSortOptions(false);
+  };
+
+  const handleBindingClick = (binding) => {
+    setSelectedBinding(binding.priorityNum);
+    toggleShowDetails(binding);
   };
 
   return (
@@ -153,23 +170,23 @@ export default function BindingTable({
                 <div className="absolute z-10 bg-white shadow-md rounded-md mt-2 text-center">
                   <button
                     className={`block w-full py-2 px-3 text-md w-full font-large ${
-                      sortOrder === "newest"
+                      sortOrder === "desc"
                         ? "text-neutral-500"
                         : "hover:bg-gray-200"
                     }`}
-                    onClick={() => handleSortChange("newest")}
-                    disabled={sortOrder === "newest"}
+                    onClick={() => handleSortChange("asc")}
+                    disabled={sortOrder === "asc"}
                   >
                     Newest
                   </button>
                   <button
                     className={`block w-full py-2 px-3 hover:bg-gray-200 text-md font-large ${
-                      sortOrder === "oldest"
+                      sortOrder === "desc"
                         ? "text-neutral-500"
                         : "hover:bg-gray-200"
                     }`}
-                    onClick={() => handleSortChange("oldest")}
-                    disabled={sortOrder === "oldest"}
+                    onClick={() => handleSortChange("desc")}
+                    disabled={sortOrder === "desc"}
                   >
                     Oldest
                   </button>
@@ -205,16 +222,21 @@ export default function BindingTable({
             currentBindings.map((binding) => (
               <div
                 key={binding.priorityNum}
-                className="flex gap-5 justify-between items-center p-4 w-full max-md:flex-wrap max-md:max-w-full"
-                onClick={() => toggleShowDetails(binding)}
+                className={`flex gap-5 justify-between items-center p-4 w-full max-md:flex-wrap max-md:max-w-full ${
+                  selectedBinding === binding.priorityNum ? "bg-gray-100" : ""
+                }`}
+                onClick={() => handleBindingClick(binding)}
               >
-                <div className="flex gap-2 justify-between self-stretch font-bold whitespace-nowrap">
+              <div className="flex">{binding.priorityNum}</div>
+              <div className="flex gap-2 justify-between self-stretch font-bold whitespace-nowrap">
                   {/* <img
                       loading="lazy"
                       srcSet="..."
                       className="w-8 aspect-square"
                     /> */}
-                  <div className="grow my-auto">{binding.name}</div>
+                  <div className="grow my-auto">{`${binding.firstName} ${
+                binding.middleName ? binding.middleName + " " : ""
+              }${binding.lastName}`}</div>
                 </div>
                 <div className="flex-auto self-stretch my-auto text-xs">
                   {binding.title}
