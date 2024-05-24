@@ -82,7 +82,6 @@ export default function BindingDetails({ binding, onClose }) {
         title: "Success",
         text: `Binding status updated to ${newStatus}`,
       });
-      onClose();
     } catch (error) {
       console.error(`Error updating status for binding ${binding.id}`, error);
     }
