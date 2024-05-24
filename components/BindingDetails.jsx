@@ -253,7 +253,7 @@ export default function BindingDetails({ binding, onClose }) {
             <button onClick={() => setIsEditable(true)}>Edit</button>
           </div>
         )}
-          <div className="font-semibold text-neutral-500">
+          <div className="mt-2 font-semibold text-neutral-500">
             Appointment Date: {binding.apptDate || "N/A"}
             <br />
             Copies: {binding.copies || "N/A"}

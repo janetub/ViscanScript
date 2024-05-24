@@ -19,7 +19,7 @@ function BindingManagement({
   
   const onClose = () => {
     setReloadKey(prevKey => prevKey + 1);
-    // handleClose(); 
+    handleClose(); 
   };
 
   return (
