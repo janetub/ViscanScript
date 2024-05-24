@@ -10,6 +10,7 @@ export const bindingStatuses = [
   { status: "Ready", color: "#800080" },
   { status: "Completed", color: "#FF0000" },
 ];
+
 export const getNextStatus = (status) => {
   const currentIndex = bindingStatuses.findIndex(
     (item) => item.status === status,

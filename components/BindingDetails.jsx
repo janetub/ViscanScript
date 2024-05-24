@@ -70,10 +70,22 @@ export default function BindingDetails({ binding, onClose }) {
     orID: binding.orID || "",
   });
   const [isEditable, setIsEditable] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(binding.status);
-
-  const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
+  const [status, setStatus] = useState(binding.status);
+  
+  const handleStatusChange = async (event) => {
+    const newStatus = event.target.value;
+    setStatus(newStatus); // Update the local state
+    try {
+      await updateDocument("bindings", binding.id, { status: newStatus }); // Save to Firestore
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `Binding status updated to ${newStatus}`,
+      });
+      onClose();
+    } catch (error) {
+      console.error(`Error updating status for binding ${binding.id}`, error);
+    }
   };
 
   const handleChangeID = (e) => {
@@ -94,7 +106,6 @@ export default function BindingDetails({ binding, onClose }) {
         title: "Success",
         text: "Changes saved successfully.",
       });
-
       setIsEditable(false);
     } catch (error) {
       console.error("Error updating binding details:", error);
@@ -159,10 +170,18 @@ export default function BindingDetails({ binding, onClose }) {
             {binding.title}
           </div>
           <div className="mt-7 text-neutral-800">Status</div>
-          <div className="flex justify-center  gap-1 self-start px-1.5 py-px mt-2 text-xs tracking-wide leading-4 text-yellow-400 whitespace-nowrap rounded-xl">
-            <div className="justify-center px-2 py-1 bg-yellow-50 rounded-[100px]">
-              {binding.status}
-            </div>
+          <div className="flex flex-col gap-1 self-start px-1.5 py-px mt-2 text-xs tracking-wide leading-4 text-yellow-400 whitespace-nowrap rounded-xl">
+          <select
+            className="justify-center px-2 py-1 bg-yellow-50 rounded-[100px]"
+            value={status}
+            onChange={handleStatusChange}
+          >
+            {bindingStatuses.map((statusObj) => (
+              <option key={statusObj.status} value={statusObj.status}>
+                {statusObj.status}
+              </option>
+            ))}
+          </select>
           </div>
           {/* Next Status Button */}
           <div className="flex justify-center text-center text-white mt-4">
@@ -262,7 +281,7 @@ export default function BindingDetails({ binding, onClose }) {
               rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
-              <div className="text-neutral-800">File Name.docx</div>
+              <div className="text-neutral-800">DOCX Manuscipt</div>
               <div className="text-neutral-400">4/16/2021 07:47:03 </div>
             </a>
           </div>
@@ -279,7 +298,7 @@ export default function BindingDetails({ binding, onClose }) {
               rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
-              <div className="text-neutral-800">File Name.pdf</div>
+              <div className="text-neutral-800">PDF Manuscript</div>
               <div className="text-neutral-400">3/20/2021 12:47:03 </div>
             </a>
           </div>
@@ -296,7 +315,7 @@ export default function BindingDetails({ binding, onClose }) {
               rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
-              <div className="text-neutral-800">File Name.jpeg</div>
+              <div className="text-neutral-800">JPEG/JPG 2by2 ID Photo</div>
               <div className="text-neutral-400">3/20/2021 12:47:03 </div>
             </a>
           </div>
