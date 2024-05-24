@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, orderBy, limit, updateDoc, where, getDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, orderBy, limit, updateDoc, where, getDoc, setDoc } from 'firebase/firestore';
 
 // TODO: proper documentation, add to documentation the argument formats
 // Function to restart priority numbers of certain statuses
@@ -65,21 +65,28 @@ export async function countData(db, collectionNames, fields, values) {
 export async function assignPriorityNum(db, date) {
     try {
         const scheduleDocRef = doc(db, 'operatingSchedule', date);
+        console.log(`Document Path: operatingSchedule/${date}`);
         const scheduleDoc = await getDoc(scheduleDocRef);
 
-        if (!scheduleDoc.exists()) {
-            return 1;
+        let newPriorityNum;
+        if (scheduleDoc.exists()) {
+            const scheduleData = scheduleDoc.data();
+            const lastPriorityNum = scheduleData.lastPriorityNum || 0;
+            console.log(`Current lastPriorityNum: ${lastPriorityNum}`);
+            newPriorityNum = lastPriorityNum + 1;
+            await updateDoc(scheduleDocRef, { lastPriorityNum: newPriorityNum });
+        } else {
+            newPriorityNum = 1;
+            await setDoc(scheduleDocRef, { lastPriorityNum: newPriorityNum, date, enabled: true });
         }
-
-        const scheduleData = scheduleDoc.data();
-        const lastPriorityNum = scheduleData.lastPriorityNum || 0;
-
-        return lastPriorityNum + 1;
+        console.log(`New lastPriorityNum: ${newPriorityNum}`);
+        return newPriorityNum;
     } catch (error) {
         console.error("Error assigning priority number: ", error);
         throw error;
     }
 }
+
 export async function cleanPriorityNumbers(db, date) {
     const collectionRef = collection(db, 'bindings');
         let queryRef = query(collectionRef, orderBy('apptDate'), orderBy('priorityNum'));

@@ -223,9 +223,9 @@ export default function BindingRequestForm({
         studentNum,
         requestDate,
         status: "Pending",
-        pdfLink: pdfFileURL,
-        docxLink: docxFileURL,
-        idPhotoLink: idPhotoURL,
+        pdfFile: pdfFileURL,
+        docxFile: docxFileURL,
+        idPhoto: idPhotoURL,
         ackID: "",
         amount: "",
         bindID: "",
@@ -236,6 +236,7 @@ export default function BindingRequestForm({
       };
       try {
         const docRef = doc(db, "bindings", transactionId);
+        console.log("Bindings Reference", docRef);
         await setDoc(docRef, transactionData);
         console.log("Document successfully written!");
   
