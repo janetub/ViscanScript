@@ -16,6 +16,7 @@ export default function BindingTable({
   collectionName,
   bindingOrderStatus,
   selectedApptDate,
+  reloadKey,
 }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -106,7 +107,7 @@ export default function BindingTable({
 
     fetchBindings();
     setCurrentPage(1);
-  }, [collectionName, bindingOrderStatus, selectedApptDate]);
+  }, [collectionName, bindingOrderStatus, selectedApptDate, reloadKey]);
 
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);

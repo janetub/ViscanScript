@@ -15,14 +15,12 @@ function BindingManagement({
 }) {
 
   const [selectedApptDate, setSelectedApptDate] = useState(format(new Date(), "yyyy-MM-dd")); 
-  const [reloadKey, setReloadKey] = useState(0); // Add a state to trigger reload
-
+  const [reloadKey, setReloadKey] = useState(0); 
   
   const onClose = () => {
     setReloadKey(prevKey => prevKey + 1);
-    handleClose(); 
+    // handleClose(); 
   };
-
 
   return (
     <div className="flex flex-col ml-5 w-[83%] max-md:ml-0 max-md:w-full">
@@ -50,6 +48,7 @@ function BindingManagement({
                   collectionName="bindings"
                   bindingOrderStatus={selectedTab !== "all" ? selectedTab : null}
                   selectedApptDate={selectedApptDate}
+                  reloadKey={reloadKey}
                 />
                 {showDetails && (
                   <BindingDetails binding={selectedBinding} onClose={onClose} />
