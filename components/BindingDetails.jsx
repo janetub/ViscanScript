@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { updateBindingStatus } from "@/utils/updateBindings";
 import { useState } from "react";
 import React from 'react';
+import { updateDocument } from "@/utils/firestoreService";
 
 BindingDetails.defaultProps = {
   binding: {
@@ -82,7 +83,7 @@ export default function BindingDetails({ binding, onClose }) {
 
   const handleSaveIDChanges = async () => {
     try {
-      await updateBindingStatus(binding.id, {
+      await updateDocument("bindings", binding.id, {
         ackID: editableFields.ackID,
         bindID: editableFields.bindID,
         orID: editableFields.orID,
@@ -95,7 +96,6 @@ export default function BindingDetails({ binding, onClose }) {
       });
 
       setIsEditable(false);
-      onClose();
     } catch (error) {
       console.error("Error updating binding details:", error);
     }
@@ -179,49 +179,61 @@ export default function BindingDetails({ binding, onClose }) {
               Complete Order
             </div> */}
           </div>
+          {binding.status === "For Binding" && (
+          <div className="flex flex-col mt-2 gap-2 px-4 pt-4 pb-4 w-full text-sm font-medium leading-5 rounded border border-solid bg-neutral-50 border-[color:var(--Grey-200,#F5F5F5)]">
+            {/* Acknowledgement ID */}
+            <div className="font-semibold text-neutral-500">
+              Acknowledgement ID:{" "}
+              {isEditable ? (
+                <input
+                  type="text"
+                  name="ackID"
+                  value={editableFields.ackID}
+                  onChange={handleChangeID}
+                  style={{ outline: "2px solid #6c757d" }}
+                />
+              ) : (
+                editableFields.ackID || "N/A"
+              )}
+            </div>
+            {/* Binding ID */}
+            <div className="font-semibold text-neutral-500">
+              Binding ID:{" "}
+              {isEditable ? (
+                <input
+                  type="text"
+                  name="bindID"
+                  value={editableFields.bindID}
+                  onChange={handleChangeID}
+                  style={{ outline: "2px solid #6c757d" }}
+                />
+              ) : (
+                editableFields.bindID || "N/A"
+              )}
+            </div>
+            {/* OR ID */}
+            <div className="font-semibold text-neutral-500">
+              OR ID:{" "}
+              {isEditable ? (
+                <input
+                  type="text"
+                  name="orID"
+                  value={editableFields.orID}
+                  onChange={handleChangeID}
+                  style={{ outline: "2px solid #6c757d" }}
+                />
+              ) : (
+                editableFields.orID || "N/A"
+              )}
+            </div>
+            {/* Update button */}
+            {isEditable && (
+              <button onClick={handleSaveIDChanges}>Save Changes</button>
+            )}
+            <button onClick={() => setIsEditable(true)}>Edit</button>
+          </div>
+        )}
           <div className="font-semibold text-neutral-500">
-            Acknowledgement ID:{" "}
-            {isEditable ? (
-              <input
-                type="text"
-                name="ackID"
-                value={editableFields.ackID.toString()}
-                onChange={handleChangeID}
-                style={{ outline: "2px solid #6c757d" }}
-              />
-            ) : (
-              String(editableFields.ackID) || "N/A"
-            )}
-          </div>
-          <div className="mt-7 font-semibold text-neutral-500">
-            Binding ID:{" "}
-            {isEditable ? (
-              <input
-                type="text"
-                name="bindID"
-                value={editableFields.bindID.toString()}
-                onChange={handleChangeID}
-                style={{ outline: "2px solid #6c757d" }}
-              />
-            ) : (
-              String(editableFields.bindID) || "N/A"
-            )}
-          </div>
-          <div className="mt-7 font-semibold text-neutral-500">
-            OR ID:{" "}
-            {isEditable ? (
-              <input
-                type="text"
-                name="orID"
-                value={editableFields.orID.toString()}
-                onChange={handleChangeID}
-                style={{ outline: "2px solid #6c757d" }}
-              />
-            ) : (
-              String(editableFields.orID) || "N/A"
-            )}
-          </div>
-          <div className="mt-7 font-semibold text-neutral-500">
             Appointment Date: {binding.apptDate || "N/A"}
             <br />
             Copies: {binding.copies || "N/A"}
@@ -247,6 +259,7 @@ export default function BindingDetails({ binding, onClose }) {
             <a
               href={binding.docxFile}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
               <div className="text-neutral-800">File Name.docx</div>
@@ -263,6 +276,7 @@ export default function BindingDetails({ binding, onClose }) {
             <a
               href={binding.pdfFile}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
               <div className="text-neutral-800">File Name.pdf</div>
@@ -279,6 +293,7 @@ export default function BindingDetails({ binding, onClose }) {
             <a
               href={binding.pdfFile}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col flex-1"
             >
               <div className="text-neutral-800">File Name.jpeg</div>
