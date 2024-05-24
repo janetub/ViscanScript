@@ -19,8 +19,8 @@ function BindingManagement({
 
   
   const onClose = () => {
-    setReloadKey(prevKey => prevKey + 1); // Increment reloadKey to trigger re-render
-    handleClose(); // Call the original handleClose function
+    setReloadKey(prevKey => prevKey + 1);
+    handleClose(); 
   };
 
 
